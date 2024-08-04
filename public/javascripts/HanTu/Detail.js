@@ -43,6 +43,7 @@ async function TimKiem() {
 
 $(document).ready(async () => {
   Loader(false);
+  ResetData();
   var id = $("#txtTimKiem").data("id");
   await LayDuLieuTuAPI(id, "");
   danhSachCapDo = await LayDanhSachCapDoTuAPI();
@@ -55,6 +56,7 @@ $(document).ready(async () => {
 
 $(document).on("click", "#btnTimKiem", async function (e) {
   Loader(false);
+  ResetData();
   var name = $("#txtTimKiem").val();
   await LayDuLieuTuAPI("", name);
   await TimKiem()
@@ -62,6 +64,7 @@ $(document).on("click", "#btnTimKiem", async function (e) {
 })
 
 $(document).on("click", "#btnLuu", async function (e) {
+  var result;
   Loader(false);
   duLieu.hanViet = $("#txtHanViet").val();
   duLieu.nghia = $("#txtNghia").val();
@@ -74,7 +77,13 @@ $(document).on("click", "#btnLuu", async function (e) {
     })
   }
   console.log(duLieu);
-  const result = await POST(`han-tu/cap-nhat`, duLieu);
+  if (duLieu.id) {
+    result = await POST(`han-tu/cap-nhat`, duLieu);
+  }
+  else {
+    result = await POST(`han-tu/them-moi`, duLieu);
+  }
+  ResetData();
   duLieu = result.data;
   await TimKiem()
   Loader(true);
@@ -90,8 +99,20 @@ async function LayDuLieuTuAPI(id = "", name = "", isLoad = false) {
   else {
     result = await GET(`/han-tu/tim-kiem?name=${name}`);
   }
-  if (result.status != "200") return false;
-  duLieu = result.data;
+  if (result.status != "200") {
+    duLieu = {
+      id: "", url: "", name: name,
+      capDo: [], giaoTrinh: [],
+      hanViet: "", nghia: "", kun: [],
+      on: [], amDatBiet: [],
+      laBoThu: [], coBoThu: [], soNet: "",
+      chuDe: [], lucThu: [],
+      viDu: []
+    }
+  }
+  else {
+    duLieu = result.data;
+  }
 
   if (isLoad) Loader(true);
   return true;
@@ -246,40 +267,43 @@ async function LayDuLieuTuMazzi() {
     page: 1
   });
 
-  res = result.results[0];
-  duLieuMazzi.name = res.kanji;
-  if (res.level) {
-    duLieuMazzi.capDo = res.level.map(e => {
-      var find = danhSachCapDo.map(e => e.name).indexOf(e);
-      if (find != -1)
-        return { ...danhSachCapDo[find] }
-      return {
-        id: e,
-        name: e
-      }
-    })
-  }
-  duLieu.capDo.push(...duLieuMazzi.capDo);
-  duLieuMazzi.hanViet = res.mean;
-  duLieuMazzi.nghia = res.detail;
-  duLieuMazzi.soNet = res.stroke_count;
-  if (res.kun) {
-    duLieuMazzi.kun = XuLyAm(res.kun);
-  } else {
-    duLieuMazzi.kun = []
-  }
-  duLieu.kun.push(...duLieuMazzi.kun);
-  if (res.on) {
-    duLieuMazzi.on = XuLyAm(res.on)
-  } else {
-    duLieuMazzi.on = []
-  }
-  duLieu.on.push(...duLieuMazzi.on);
-  if (res.compDetail) {
-    duLieuMazzi.coBoThu = res.compDetail.map(e => {
-      return { id: e.w, name: e.w };
-    });
-    duLieu.coBoThu.push(...duLieuMazzi.coBoThu);
+  if (result.results.length) {
+    res = result.results[0];
+    duLieuMazzi.name = res.kanji;
+    duLieuMazzi.capDo = []
+    if (res.level) {
+      duLieuMazzi.capDo = res.level.map(e => {
+        var find = danhSachCapDo.map(e => e.name).indexOf(e);
+        if (find != -1)
+          return { ...danhSachCapDo[find] }
+        return {
+          id: e,
+          name: e
+        }
+      })
+    }
+    duLieu.capDo.push(...duLieuMazzi.capDo);
+    duLieuMazzi.hanViet = res.mean;
+    duLieuMazzi.nghia = res.detail;
+    duLieuMazzi.soNet = res.stroke_count;
+    if (res.kun) {
+      duLieuMazzi.kun = XuLyAm(res.kun);
+    } else {
+      duLieuMazzi.kun = []
+    }
+    duLieu.kun.push(...duLieuMazzi.kun);
+    if (res.on) {
+      duLieuMazzi.on = XuLyAm(res.on)
+    } else {
+      duLieuMazzi.on = []
+    }
+    duLieu.on.push(...duLieuMazzi.on);
+    if (res.compDetail) {
+      duLieuMazzi.coBoThu = res.compDetail.map(e => {
+        return { id: e.w, name: e.w };
+      });
+      duLieu.coBoThu.push(...duLieuMazzi.coBoThu);
+    }
   }
 }
 
@@ -301,6 +325,7 @@ function XuLyAm(chuoi = "") {
 }
 
 function VeDuLieuMazzi() {
+  if (Object.keys(duLieuMazzi).length === 0) return;
   for (var item of duLieuMazzi.capDo) {
     VeMotBadge(item, "#boxCapDo", "light");
     VeDanhSach(danhSachCapDo, duLieu.capDo, "#slCapDo");
@@ -350,6 +375,16 @@ $(document).on("click", "span.badge", async function (e) {
       var index = duLieu.lucThu.map(e => e.id).indexOf($(e.target).data("id"));
       duLieu.lucThu.splice(index, 1);
       VeDanhSach(danhSachLucThu, duLieu.lucThu, "#slLucThu");
+      break;
+
+    case "#boxKUN":
+      var index = duLieu.kun.map(e => e.id).indexOf($(e.target).data("id"));
+      duLieu.kun.splice(index, 1);
+      break;
+
+    case "#boxON":
+      var index = duLieu.on.map(e => e.id).indexOf($(e.target).data("id"));
+      duLieu.on.splice(index, 1);
       break;
 
     default:
@@ -427,3 +462,39 @@ $(document).on("click", ".mazzi", async function (e) {
   $("#" + id).val($(e.target).text());
   Loader(true);
 })
+
+function ResetData() {
+  duLieu = {
+    id: "", url: "", name: name,
+    capDo: [], giaoTrinh: [],
+    hanViet: "", nghia: "", kun: [],
+    on: [], amDatBiet: [],
+    laBoThu: [], coBoThu: [], soNet: "",
+    chuDe: [], lucThu: [],
+    viDu: []
+  };
+  duLieuMazzi = {
+    id: "", url: "", name: name,
+    capDo: [], giaoTrinh: [],
+    hanViet: "", nghia: "", kun: [],
+    on: [], amDatBiet: [],
+    laBoThu: [], coBoThu: [], soNet: "",
+    chuDe: [], lucThu: [],
+    viDu: []
+  };
+  $("#txtName").val("");
+  $("a").text("");
+  $("a").prop("href", "#");
+  $("#boxCapDo > span").remove();
+  $("#boxGiaoTrinh > span").remove();
+  $("#boxGiaoTrinh > span").remove();
+  $("#txtHanViet").val("");
+  $("#txtNghia").val("");
+  $("#boxKUN > span").remove();
+  $("#boxON > span").remove();
+  $("#boxKhac > span").remove();
+  $("#boxLaBoThu > span").remove();
+  $("#boxCoBoThu > span").remove();
+  $("#txtSoNet").val("");
+  $("#boxLucThu > span").remove();
+}
