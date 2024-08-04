@@ -19,7 +19,32 @@ exports.layNameID = async (page_id) => {
   return res;
 }
 
-exports.timDanhSachGiaoTrinh = async (parent_id) => {
+exports.timDanhSachGiaoTrinh = async (name) => {
+  console.log("timDanhSachGiaoTrinh", name);
+  const database_id = process.env.GIAO_TRINH;
+  
+  const result = await notion.databases.query({
+    database_id,
+    filter: {
+      property: "Tên",
+      rich_text: {
+        equals: name
+      }
+    }
+  })
+
+  if (result.results.length > 0) {
+    var res = []
+    for (var item of result.results) {
+      res.push(await this.LayDuLieu(item))
+    }
+    return res;
+  }
+
+  return null;
+}
+
+exports.timDanhSachGiaoTrinhTheoCha = async (parent_id) => {
   const database_id = process.env.GIAO_TRINH;
   var result;
 
