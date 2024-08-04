@@ -9,7 +9,15 @@ const giaTrinhModel = require("./GiaoTrinh.model.js");
 exports.NAME = {
   CAP_DO: "Cấp độ",
   GIAO_TRINH: "Giáo trình",
-  LA_BO_THU: "Là bộ thủ"
+  LA_BO_THU: "Là bộ thủ",
+  KUN: "訓",
+  ON: "音",
+  HAN_VIET: "Hán Việt",
+  NGHIA: "Nghĩa",
+  SO_NET: "Số nét",
+  CO_BO_THU: "Có bộ thủ",
+  CHU_DE:"Chủ đề",
+  LUC_THU:"Lục thư",
 }
 
 exports.layNameID = async (page_id) => {
@@ -70,6 +78,8 @@ exports.LayDuLieu = async (result = { ...utils.hanTu.page }) => {
   for (var relation of relations) {
     giaoTrinh.push(await giaTrinhModel.layNameID(relation.id))
   }
+  console.log(giaoTrinh);
+  
 
   // laBoThu
   laBoThu = [];
@@ -92,13 +102,6 @@ exports.LayDuLieu = async (result = { ...utils.hanTu.page }) => {
     chuDe.push(await this.layNameID(relation.id))
   }
 
-  // // viDu
-  // coBoThu = [];
-  // relations = properties["Có bộ thủ"].relation;
-  // for (var relation of relations) {
-  //   coBoThu.push(await this.layNameID(relation.id))
-  // }
-
   return {
     id: result.id,
     url: result.url,
@@ -116,4 +119,172 @@ exports.LayDuLieu = async (result = { ...utils.hanTu.page }) => {
     lucThu: properties["Lục thư"].multi_select,
     chuDe,
   }
+}
+
+exports.themMoiHanTu = async (data = { ...utils.hanTu.data }) => {
+  console.log("themMoiHanTu");
+  
+  var database_id = process.env.HAN_TU;
+  var properties = await this.makeProperties(data);
+
+  const result = await notion.pages.create({
+    "parent": {
+      "type": "database_id",
+      database_id
+    },
+    properties
+  });
+
+  console.log(result);
+  
+  return this.LayDuLieu(result);
+}
+
+exports.capNhatHanTu = async (data = { ...utils.hanTu.data }) => {
+  var properties = {
+    "Cấp độ": {
+      relation: []
+    },
+    "Giáo trình": {
+      relation: []
+    },
+    "Hán Việt": {
+      "rich_text": [
+        {
+          "text": {
+            "content": ""
+          }
+        }
+      ]
+    },
+    "Nghĩa": {
+      "rich_text": [
+        {
+          "text": {
+            "content": ""
+          }
+        }
+      ]
+    },
+    "訓": {
+      multi_select: []
+    },
+    "音": {
+      multi_select: []
+    },
+    "Số nét": {
+      "number": 0
+    },
+  };
+
+  properties = await this.makeProperties(data);
+
+  const result = await notion.pages.update({
+    page_id: data.id,
+    properties
+  })
+
+  return this.LayDuLieu(result);
+}
+
+exports.makeProperties = async (data = { ...utils.hanTu.data }) => {
+  console.log("makeProperties");
+  var properties = {};
+
+  if (data.name) {
+    properties["Name"] = {
+      "title": [
+        {
+          "text": {
+            "content": data.name
+          }
+        }
+      ]
+    };
+  }
+
+  if (data.capDo) {
+    properties[this.NAME.CAP_DO] = { relation: [] };
+    for (var item of data.capDo) {
+      if (await capDoModel.timDanhSachCapDo(item.name)) {
+        properties[this.NAME.CAP_DO].relation.push({ id: item.id });
+      };
+    }
+  }
+
+  if (data.giaoTrinh) {
+    properties[this.NAME.GIAO_TRINH] = { relation: [] };
+    for (var item of data.giaoTrinh) {
+      console.log(item);
+      
+      if (await giaTrinhModel.timDanhSachGiaoTrinh(item.name)) {
+        properties[this.NAME.GIAO_TRINH].relation.push({ id: item.id });
+      };
+    }
+    console.log(properties[this.NAME.GIAO_TRINH]);
+    
+  }
+
+  if (data.hanViet) {
+    properties[this.NAME.HAN_VIET] = {
+      "rich_text": [
+        {
+          "text": {
+            "content": data.hanViet
+          }
+        }
+      ]
+    };
+  }
+
+  if (data.nghia) {
+    properties[this.NAME.NGHIA] = {
+      "rich_text": [
+        {
+          "text": {
+            "content": data.nghia
+          }
+        }
+      ]
+    }
+  }
+
+  if (data.kun) {
+    properties[this.NAME.KUN] = { multi_select: [] };
+    properties[this.NAME.KUN].multi_select = [...new Set(data.kun.map(e => e.name))].map(e => { return { name: e } });
+  }
+
+  if (data.on) {
+    properties[this.NAME.ON] = { multi_select: [] };
+    properties[this.NAME.ON].multi_select = [...new Set(data.on.map(e => e.name))].map(e => { return { name: e } });
+  }
+
+  if (data.soNet) {
+    properties[this.NAME.SO_NET] = {
+      "number": parseInt(data.soNet)
+    }
+  }
+
+  if (data.coBoThu) {
+    properties[this.NAME.CO_BO_THU] = { relation: [] };
+    for (var item of data.coBoThu) {
+      var itemCheck = await this.layHanTuTuName(item.name)
+      if (itemCheck) {
+        properties[this.NAME.CO_BO_THU].relation.push({ id: itemCheck.id });
+      }
+      else {
+        var r = await this.themMoiHanTu(item);
+        properties[this.NAME.CO_BO_THU].relation.push({ id: r.id });
+      }
+    }
+  }
+
+  // chu de
+
+  if (data.lucThu) {
+    properties[this.NAME.LUC_THU] = { multi_select: [] };
+    properties[this.NAME.LUC_THU].multi_select = [...new Set(data.lucThu.map(e => e.name))].map(e => { return { name: e } });
+  }
+
+  return properties
 }

@@ -3,6 +3,6 @@ var router = express.Router();
 const giaoTrinhController = require('../controllers/GiaoTrinh.controller.js');
 
 
-router.get('/tim-kiem', giaoTrinhController.timDanhSachGiaoTrinh);
+router.get('/tim-kiem', giaoTrinhController.timDanhSachGiaoTrinhTheoCha);
 
 module.exports = router;
