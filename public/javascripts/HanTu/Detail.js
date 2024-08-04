@@ -30,8 +30,8 @@ var duLieuMazzi = {
 
 async function TimKiem() {
   VeDuLieu();
-  VeDanhSachCapDo(LayDanhSachCapDo());
-  VeDanhSachLucThu(LayDanhSachLucThu());
+  VeDanhSach(danhSachCapDo, LayDanhSachCapDo(), "#slCapDo");
+  VeDanhSach(danhSachLucThu, LayDanhSachLucThu(), "#slLucThu");
   await LayDuLieuTuMazzi();
   VeDuLieuMazzi();
 }
@@ -115,22 +115,12 @@ function LayDanhSachCapDo() {
   return danhSach;
 }
 
-function VeDanhSachCapDo(danhSachLoaiTru = [{ id: "", name: "" }]) {
-  $(`#slCapDo > option`).remove();
-  $(`#slCapDo`).append(`<option value="" data-id="" data-name="">Chọn cấp độ</option>`);
-  for (var item of danhSachCapDo) {
+function VeDanhSach(danhSach = [{ id: "", name: "" }], danhSachLoaiTru = [{ id: "", name: "" }], id = "") {
+  $(`${id} > option`).remove();
+  $(`${id}`).append(`<option value="" data-id="" data-name="">Chọn</option>`);
+  for (var item of danhSach) {
     if (danhSachLoaiTru.filter(i => i.id == item.id).length == 0) {
-      $(`#slCapDo`).append(`<option value="${item.id}/${item.name}" data-id="${item.id}" data-name="${item.name}">${item.name}</option>`);
-    }
-  }
-}
-
-function VeDanhSachLucThu(danhSachLoaiTru = [{ id: "", name: "" }]) {
-  $(`#slLucThu > option`).remove();
-  $(`#slLucThu`).append(`<option value="" data-id="" data-name="">Chọn lục thư</option>`);
-  for (var item of danhSachLucThu) {
-    if (danhSachLoaiTru.filter(i => i.id == item.id).length == 0) {
-      $(`#slCapDo`).append(`<option value="${item.id}/${item.name}" data-id="${item.id}" data-name="${item.name}">${item.name}</option>`);
+      $(`${id}`).append(`<option value="${item.id}/${item.name}" data-id="${item.id}" data-name="${item.name}">${item.name}</option>`);
     }
   }
 }
@@ -278,7 +268,7 @@ $(document).on("click", "span.badge", async function (e) {
     case "#boxCapDo":
       var index = duLieu.capDo.map(e => e.id).indexOf($(e.target).data("id"));
       duLieu.capDo.splice(index, 1);
-      VeDanhSachCapDo(duLieu.capDo);
+      VeDanhSach(danhSachCapDo, duLieu.capDo, "#slCapDo");
       break;
 
     default:
@@ -300,7 +290,7 @@ $(`select`).on("change", function (e) {
     case "#boxCapDo":
       duLieu.capDo.push(item);
       VeMotBadge(item, type, "secondary")
-      VeDanhSachCapDo(duLieu.capDo);
+      VeDanhSach(danhSachCapDo, duLieu.capDo, "#slCapDo");
       break;
     default:
       break;
