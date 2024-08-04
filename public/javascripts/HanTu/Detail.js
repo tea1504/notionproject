@@ -74,8 +74,8 @@ $(document).on("click", "#btnLuu", async function (e) {
     })
   }
   console.log(duLieu);
-  var name = $("#txtTimKiem").val();
-  await LayDuLieuTuAPI("", name);
+  const result = await POST(`han-tu/cap-nhat`, duLieu);
+  duLieu = result.data;
   await TimKiem()
   Loader(true);
 })
@@ -250,6 +250,9 @@ async function LayDuLieuTuMazzi() {
   duLieuMazzi.name = res.kanji;
   if (res.level) {
     duLieuMazzi.capDo = res.level.map(e => {
+      var find = danhSachCapDo.map(e => e.name).indexOf(e);
+      if (find != -1)
+        return { ...danhSachCapDo[find] }
       return {
         id: e,
         name: e

@@ -117,3 +117,38 @@ exports.LayDuLieu = async (result = { ...utils.hanTu.page }) => {
     chuDe,
   }
 }
+
+exports.capNhatHanTu = async (data = { ...utils.hanTu.data }) => {
+  var properties = {
+    "Cấp độ": {
+      relation: []
+    },
+    "Giáo trình": {
+      relation: []
+    },
+  };
+
+  properties[this.NAME.CAP_DO].relation = []
+  for (var item of data.capDo) {
+    if (await capDoModel.timDanhSachCapDo(item.name)) {
+      properties[this.NAME.CAP_DO].relation.push({ id: item.id });
+    };
+  }
+
+  // properties[this.NAME.GIAO_TRINH].relation = []
+  // for (var item of data.capDo) {
+  //   if (await giaTrinhModel.timDanhSachCapDo(item.name)) {
+  //     properties[this.NAME.GIAO_TRINH].relation.push({ id: item.id });
+  //   };
+  // }
+
+  console.log(properties);
+
+
+  const result = await notion.pages.update({
+    page_id: data.id,
+    properties
+  })
+
+  return this.LayDuLieu(result);
+}
