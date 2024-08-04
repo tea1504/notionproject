@@ -231,3 +231,108 @@ exports.capDo = {
     "public_url": null
   }
 }
+
+// chu de
+exports.chuDe = {
+  page: {
+    "object": "page",
+    "id": "392daf23-4529-4817-a738-6520ab8ade22",
+    "created_time": "2024-02-18T13:11:00.000Z",
+    "last_edited_time": "2024-03-02T13:31:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "0057a200-ab9b-4b95-8b04-04aec4982cb0"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "0057a200-ab9b-4b95-8b04-04aec4982cb0"
+    },
+    "cover": null,
+    "icon": {
+      "type": "emoji",
+      "emoji": "💼"
+    },
+    "parent": {
+      "type": "database_id",
+      "database_id": "cf9530d7-38bd-4238-a657-add9ab9c0b0c"
+    },
+    "archived": false,
+    "in_trash": false,
+    "properties": {
+      "Created": {
+        "id": "O_%7CC",
+        "type": "created_time",
+        "created_time": "2024-02-18T13:11:00.000Z"
+      },
+      "Cách đọc": {
+        "id": "adVL",
+        "type": "rich_text",
+        "rich_text": []
+      },
+      "🧨 Giáo trình": {
+        "id": "wU%3Em",
+        "type": "relation",
+        "relation": [],
+        "has_more": false
+      },
+      "Tags": {
+        "id": "yKVm",
+        "type": "multi_select",
+        "multi_select": []
+      },
+      "index": {
+        "id": "%7CYOz",
+        "type": "number",
+        "number": null
+      },
+      "Nghĩa": {
+        "id": "%7CaNM",
+        "type": "rich_text",
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "Công việc",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "Công việc",
+            "href": null
+          }
+        ]
+      },
+      "Name": {
+        "id": "title",
+        "type": "title",
+        "title": [
+          {
+            "type": "text",
+            "text": {
+              "content": "仕事",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "仕事",
+            "href": null
+          }
+        ]
+      }
+    },
+    "url": "https://www.notion.so/392daf2345294817a7386520ab8ade22",
+    "public_url": null
+  }
+}
