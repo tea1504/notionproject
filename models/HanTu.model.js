@@ -85,12 +85,12 @@ exports.LayDuLieu = async (result = { ...utils.hanTu.page }) => {
     coBoThu.push(await this.layNameID(relation.id))
   }
 
-  // // chuDe
-  // coBoThu = [];
-  // relations = properties["Có bộ thủ"].relation;
-  // for (var relation of relations) {
-  //   coBoThu.push(await this.layNameID(relation.id))
-  // }
+  // chuDe
+  chuDe = [];
+  relations = properties["Chủ đề"].relation
+  for (var relation of relations) {
+    chuDe.push(await this.layNameID(relation.id))
+  }
 
   // // viDu
   // coBoThu = [];
@@ -114,5 +114,6 @@ exports.LayDuLieu = async (result = { ...utils.hanTu.page }) => {
     coBoThu,
     soNet: properties["Số nét"].number,
     lucThu: properties["Lục thư"].multi_select,
+    chuDe,
   }
 }

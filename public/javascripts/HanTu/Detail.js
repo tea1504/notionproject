@@ -9,6 +9,9 @@ var danhSachLucThu = [
   { id: "chuyển chú", name: "chuyển chú" },
   { id: "giả tá", name: "giả tá" },
 ];
+var danhSachGiaoTrinh = [
+  [{ id: "", name: "" }],
+];
 var duLieu = {
   id: "", url: "", name: "",
   capDo: [{ id: "", name: "" }], giaoTrinh: [{ id: "", name: "" }],
@@ -30,8 +33,10 @@ var duLieuMazzi = {
 
 async function TimKiem() {
   VeDuLieu();
-  VeDanhSach(danhSachCapDo, LayDanhSachCapDo(), "#slCapDo");
-  VeDanhSach(danhSachLucThu, LayDanhSachLucThu(), "#slLucThu");
+  VeDanhSach(danhSachCapDo, LayDanhSachTuLocal("#boxCapDo"), "#slCapDo");
+  VeDanhSach(danhSachLucThu, LayDanhSachTuLocal("#boxLucThu"), "#slLucThu");
+  VeDanhSach(danhSachChuDe, LayDanhSachTuLocal("#boxChuDe"), "#slChuDe");
+  VeDanhSach(danhSachGiaoTrinh[0], [], "#slChuDe0");
   await LayDuLieuTuMazzi();
   VeDuLieuMazzi();
 }
@@ -40,13 +45,35 @@ $(document).ready(async () => {
   Loader(false);
   var id = $("#txtTimKiem").data("id");
   await LayDuLieuTuAPI(id, "");
-  danhSachCapDo = await LayDanhSachCapDoTuAPI(id);
+  danhSachCapDo = await LayDanhSachCapDoTuAPI();
+  danhSachChuDe = await LayDanhSachChuDeTuAPI()
+  danhSachGiaoTrinh = [];
+  danhSachGiaoTrinh.push(await LayDanhSachGiaoTrinhTuAPI());
   await TimKiem();
   Loader(true);
 });
 
 $(document).on("click", "#btnTimKiem", async function (e) {
   Loader(false);
+  var name = $("#txtTimKiem").val();
+  await LayDuLieuTuAPI("", name);
+  await TimKiem()
+  Loader(true);
+})
+
+$(document).on("click", "#btnLuu", async function (e) {
+  Loader(false);
+  duLieu.hanViet = $("#txtHanViet").val();
+  duLieu.nghia = $("#txtNghia").val();
+  duLieu.soNet = $("#txtSoNet").val();
+  var val = $(`#boxSLGiaoTrinh > [data-check="1"]`).val();
+  if (val) {
+    duLieu.giaoTrinh.push({
+      id: val.split("/")[0],
+      name: val.split("/")[1],
+    })
+  }
+  console.log(duLieu);
   var name = $("#txtTimKiem").val();
   await LayDuLieuTuAPI("", name);
   await TimKiem()
@@ -71,8 +98,6 @@ async function LayDuLieuTuAPI(id = "", name = "", isLoad = false) {
 }
 
 function VeDuLieu() {
-  console.log("VeDuLieu", duLieu);
-
   $(`a`).removeClass("d-none");
   $(`a`).attr("href", duLieu.url);
   $(`a`).text(duLieu.id);
@@ -109,9 +134,45 @@ async function LayDanhSachCapDoTuAPI(isLoad = false) {
   return res;
 }
 
-function LayDanhSachCapDo() {
+async function LayDanhSachChuDeTuAPI(isLoad = false) {
+  if (isLoad) Loader(false);
+  var res = [{ id: "", name: "" }];
+  const result = await GET("/chu-de/danh-sach");
+
+  res = [];
+  for (var item of result.data) {
+    res.push({
+      id: item.id,
+      name: item.name,
+    })
+  }
+
+  if (isLoad) Loader(true);
+  return res;
+}
+
+async function LayDanhSachGiaoTrinhTuAPI(parent_id = "", isLoad = false) {
+  if (isLoad) Loader(false);
+  var res = [{ id: "", name: "" }];
+  const result = await GET(`/giao-trinh/tim-kiem?parent_id=${parent_id}`);
+
+  res = [];
+  if (result.data) {
+    for (var item of result.data) {
+      res.push({
+        id: item.id,
+        name: item.name,
+      })
+    }
+  }
+
+  if (isLoad) Loader(true);
+  return res;
+}
+
+function LayDanhSachTuLocal(id = "") {
   var danhSach = [{ id: "", name: "" }];
-  danhSach = LayDanhSach([...$(`#boxCapDo`).children()]);
+  danhSach = LayDanhSach([...$(`${id}`).children()]);
   return danhSach;
 }
 
@@ -119,16 +180,10 @@ function VeDanhSach(danhSach = [{ id: "", name: "" }], danhSachLoaiTru = [{ id: 
   $(`${id} > option`).remove();
   $(`${id}`).append(`<option value="" data-id="" data-name="">Chọn</option>`);
   for (var item of danhSach) {
-    if (danhSachLoaiTru.filter(i => i.id == item.id).length == 0) {
+    if (danhSachLoaiTru.filter(i => i.name == item.name).length == 0) {
       $(`${id}`).append(`<option value="${item.id}/${item.name}" data-id="${item.id}" data-name="${item.name}">${item.name}</option>`);
     }
   }
-}
-
-function LayDanhSachLucThu() {
-  var danhSach = [{ id: "", name: "" }];
-  danhSach = LayDanhSach([...$(`#boxLucThu`).children()]);
-  return danhSach;
 }
 
 function VeBadge(danhSach = [{ id: "", name: "" }], id = "", color = "success") {
@@ -193,12 +248,15 @@ async function LayDuLieuTuMazzi() {
 
   res = result.results[0];
   duLieuMazzi.name = res.kanji;
-  duLieuMazzi.capDo = res.level.map(e => {
-    return {
-      id: "",
-      name: e
-    }
-  })
+  if (res.level) {
+    duLieuMazzi.capDo = res.level.map(e => {
+      return {
+        id: e,
+        name: e
+      }
+    })
+  }
+  duLieu.capDo.push(...duLieuMazzi.capDo);
   duLieuMazzi.hanViet = res.mean;
   duLieuMazzi.nghia = res.detail;
   duLieuMazzi.soNet = res.stroke_count;
@@ -207,12 +265,19 @@ async function LayDuLieuTuMazzi() {
   } else {
     duLieuMazzi.kun = []
   }
+  duLieu.kun.push(...duLieuMazzi.kun);
   if (res.on) {
     duLieuMazzi.on = XuLyAm(res.on)
   } else {
     duLieuMazzi.on = []
   }
-  duLieuMazzi.coBoThu = res.compDetail.map(e => e.w)
+  duLieu.on.push(...duLieuMazzi.on);
+  if (res.compDetail) {
+    duLieuMazzi.coBoThu = res.compDetail.map(e => {
+      return { id: e.w, name: e.w };
+    });
+    duLieu.coBoThu.push(...duLieuMazzi.coBoThu);
+  }
 }
 
 function XuLyAm(chuoi = "") {
@@ -225,9 +290,9 @@ function XuLyAm(chuoi = "") {
     })
     .map(e => {
       return {
-        color: "",
+        color: "red",
         name: e,
-        id: ""
+        id: e
       }
     });
 }
@@ -235,6 +300,7 @@ function XuLyAm(chuoi = "") {
 function VeDuLieuMazzi() {
   for (var item of duLieuMazzi.capDo) {
     VeMotBadge(item, "#boxCapDo", "light");
+    VeDanhSach(danhSachCapDo, duLieu.capDo, "#slCapDo");
   }
 
   $("#btnHanViet").removeClass("disabled");
@@ -271,6 +337,18 @@ $(document).on("click", "span.badge", async function (e) {
       VeDanhSach(danhSachCapDo, duLieu.capDo, "#slCapDo");
       break;
 
+    case "#boxChuDe":
+      var index = duLieu.chuDe.map(e => e.id).indexOf($(e.target).data("id"));
+      duLieu.chuDe.splice(index, 1);
+      VeDanhSach(danhSachChuDe, duLieu.chuDe, "#slChuDe");
+      break;
+
+    case "#boxLucThu":
+      var index = duLieu.lucThu.map(e => e.id).indexOf($(e.target).data("id"));
+      duLieu.lucThu.splice(index, 1);
+      VeDanhSach(danhSachLucThu, duLieu.lucThu, "#slLucThu");
+      break;
+
     default:
       break;
   }
@@ -278,7 +356,8 @@ $(document).on("click", "span.badge", async function (e) {
   Loader(true);
 })
 
-$(`select`).on("change", function (e) {
+$(document).on("change", "select", async function (e) {
+  Loader(false);
   var type = $(e.target).data("type");
   var val = $(e.target).val();
   var item = {
@@ -292,7 +371,56 @@ $(`select`).on("change", function (e) {
       VeMotBadge(item, type, "secondary")
       VeDanhSach(danhSachCapDo, duLieu.capDo, "#slCapDo");
       break;
+
+    case "#boxChuDe":
+      duLieu.chuDe.push(item);
+      VeMotBadge(item, type, "secondary")
+      VeDanhSach(danhSachChuDe, duLieu.chuDe, "#slChuDe");
+      break;
+
+    case "#boxLucThu":
+      duLieu.lucThu.push(item);
+      VeMotBadge(item, type, "secondary")
+      VeDanhSach(danhSachLucThu, duLieu.lucThu, "#slLucThu");
+      break;
+
+    case "#boxGiaoTrinh":
+      var index = $(e.target).data("i");
+      $("#slChuDe" + index).attr("data-check", "1");
+      danhSachGiaoTrinh.splice(index, danhSachGiaoTrinh.length - index - 1);
+      var l = [...$("#boxSLGiaoTrinh").children()].length
+      for (var i = 0; i < l; i++) {
+        if (i > index) {
+          $("#slChuDe" + i).remove();
+        }
+      }
+
+      length = danhSachGiaoTrinh.length;
+      if (val) {
+        if (parseInt(index) == length - 1) {
+          var list = await LayDanhSachGiaoTrinhTuAPI(item.id);
+          if (list.length > 0) {
+            $("#boxSLGiaoTrinh").append(
+              `<select id="slChuDe${length}" class="col form-control form-control-sm mx-2" ` +
+              `name="slChuDe${length}" data-type="#boxGiaoTrinh" data-i="${length}" data-check="1"></select>`
+            )
+            $("#slChuDe" + index).attr("data-check", "0");
+            danhSachGiaoTrinh.push(await LayDanhSachGiaoTrinhTuAPI(item.id));
+            VeDanhSach(danhSachGiaoTrinh[danhSachGiaoTrinh.length - 1], [], "#slChuDe" + (index + 1));
+          }
+        }
+      }
+      break;
+
     default:
       break;
   }
+  Loader(true);
+})
+
+$(document).on("click", ".mazzi", async function (e) {
+  Loader(false);
+  var id = $(e.target).data("type");
+  $("#" + id).val($(e.target).text());
+  Loader(true);
 })
