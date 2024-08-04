@@ -22,10 +22,44 @@ exports.layHanTuTuID = async (req, res, next) => {
   }
 }
 
-exports.LayHanTuTuName = async (req, res, next) => {
+exports.layHanTuTuName = async (req, res, next) => {
   const name = req.query.name;
+  console.log("LayHanTuTuName", name);
+  
   try {
     const result = await hanTuModel.layHanTuTuName(name);
+    if (result) {
+      res.json({ status: "200", data: result });
+    }
+    else {
+      res.json({ status: "404", data: null });
+    }
+  } catch (err) {
+    console.log(err);
+    res.json({ status: err.status || "500", data: err });
+  }
+}
+
+exports.themMoiHanTu = async (req, res, next) => {
+  const data = req.body;
+  try {
+    const result = await hanTuModel.themMoiHanTu(data);
+    if (result) {
+      res.json({ status: "200", data: result });
+    }
+    else {
+      res.json({ status: "404", data: null });
+    }
+  } catch (err) {
+    console.log(err);
+    res.json({ status: err.status || "500", data: err });
+  }
+}
+
+exports.capNhatHanTu = async (req, res, next) => {
+  const data = req.body;
+  try {
+    const result = await hanTuModel.capNhatHanTu(data);
     if (result) {
       res.json({ status: "200", data: result });
     }

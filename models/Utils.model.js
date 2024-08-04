@@ -141,6 +141,15 @@ exports.hanTu = {
     "url": "",
     "public_url": "",
     "request_id": ""
+  },
+  data: {
+    id: "", url: "", name: "",
+    capDo: [{ id: "", name: "" }], giaoTrinh: [{ id: "", name: "" }],
+    hanViet: "", nghia: "", kun: [{ id: "", name: "", color: "" }],
+    on: [{ id: "", name: "", color: "" }], amDatBiet: [{ id: "", name: "", color: "" }],
+    laBoThu: [{ id: "", name: "" }], coBoThu: [{ id: "", name: "" }], soNet: "",
+    chuDe: [{ id: "", name: "" }], lucThu: [{ id: "", name: "", color: "" }],
+    viDu: [{ id: "", name: "" }]
   }
 }
 
