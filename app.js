@@ -8,11 +8,9 @@ require("dotenv").config()
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var hanTuRouter = require('./routes/HanTu.route');
+var capDoRouter = require('./routes/CapDo.route');
 
 var app = express();
-
-const { Client } = require("@notionhq/client")
-const notion = new Client({ auth: process.env.NOTION_KEY })
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,7 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/hantu', usersRouter);
+app.use('/han-tu', hanTuRouter);
+app.use('/cap-do', capDoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
