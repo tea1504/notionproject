@@ -15,6 +15,31 @@ exports.layNameID = async (page_id) => {
   return res;
 }
 
+exports.timDanhSachCapDo = async (name) => {
+  const database_id = process.env.CAP_DO;
+  console.log(name);
+  
+  const result = await notion.databases.query({
+    database_id,
+    filter: {
+      property: "Name",
+      rich_text: {
+        equals: name
+      }
+    }
+  })
+
+  if (result.results.length > 0) {
+    var res = []
+    for (var item of result.results) {
+      res.push(await this.LayDuLieu(item))
+    }
+    return res;
+  }
+
+  return null;
+}
+
 exports.layDanhSachCapDo = async () => {
   var res = [...utils.IDNames];
   const database_id = process.env.CAP_DO;
@@ -38,4 +63,15 @@ exports.layDanhSachCapDo = async () => {
   }
 
   return res;
+}
+
+exports.LayDuLieu = async (result = { ...utils.capDo.page }) => {
+  var properties = { ...utils.giaoTrinh.page.properties }
+  properties = result.properties;
+
+  return {
+    id: result.id,
+    url: result.url,
+    name: result.properties.Name.title[0].plain_text
+  }
 }

@@ -141,28 +141,126 @@ exports.hanTu = {
     "url": "",
     "public_url": "",
     "request_id": ""
+  },
+  data: {
+    id: "", url: "", name: "",
+    capDo: [{ id: "", name: "" }], giaoTrinh: [{ id: "", name: "" }],
+    hanViet: "", nghia: "", kun: [{ id: "", name: "", color: "" }],
+    on: [{ id: "", name: "", color: "" }], amDatBiet: [{ id: "", name: "", color: "" }],
+    laBoThu: [{ id: "", name: "" }], coBoThu: [{ id: "", name: "" }], soNet: "",
+    chuDe: [{ id: "", name: "" }], lucThu: [{ id: "", name: "", color: "" }],
+    viDu: [{ id: "", name: "" }]
   }
 }
 
 // giao trinh
 exports.giaoTrinh = {
   page: {
-    "object": "",
-    "id": "",
-    "created_time": "",
-    "last_edited_time": "",
-    "created_by": this.notion.user,
-    "last_edited_by": this.notion.user,
-    "cover": this.notion.file,
-    "icon": this.notion.file,
-    "parent": this.notion.database_id,
-    "archived": true,
-    "in_trash": true,
-    "properties": {
+    "object": "page",
+    "id": "406f3a15-aef6-434c-b417-834cf0812c11",
+    "created_time": "2024-07-20T02:13:00.000Z",
+    "last_edited_time": "2024-07-21T15:59:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "0057a200-ab9b-4b95-8b04-04aec4982cb0"
     },
-    "url": "",
-    "public_url": "",
-    "request_id": ""
+    "last_edited_by": {
+      "object": "user",
+      "id": "0057a200-ab9b-4b95-8b04-04aec4982cb0"
+    },
+    "cover": {
+      "type": "file",
+      "file": {
+        "url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/19992552-1e42-43cd-8737-70076046bcaa/6762e8a5-1b68-49d9-84a1-ebb84c27d85c/81cJiUYnf9L._AC_UF10001000_QL80_.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI%2F20240804%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240804T045148Z&X-Amz-Expires=3600&X-Amz-Signature=61c9260bb6986b0b7a5a8abd94f4cd4b9c2b78ec5b2464d94792828096ed3547&X-Amz-SignedHeaders=host&x-id=GetObject",
+        "expiry_time": "2024-08-04T05:51:48.056Z"
+      }
+    },
+    "icon": {
+      "type": "emoji",
+      "emoji": "📓"
+    },
+    "parent": {
+      "type": "database_id",
+      "database_id": "c2bdf572-d0ed-4385-aaf3-9417ba5bb52b"
+    },
+    "archived": false,
+    "in_trash": false,
+    "properties": {
+      "Created": {
+        "id": "%3EbmO",
+        "type": "created_time",
+        "created_time": "2024-07-20T02:13:00.000Z"
+      },
+      "Giáo trình con": {
+        "id": "BUbb",
+        "type": "relation",
+        "relation": [
+          {
+            "id": "97456f3d-0ff6-46fc-a3e1-d62e34fa9b0b"
+          }
+        ],
+        "has_more": false
+      },
+      "Tên": {
+        "id": "Jd%3ET",
+        "type": "rich_text",
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "漢字マスター",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "漢字マスター",
+            "href": null
+          }
+        ]
+      },
+      "Giáo trình cha": {
+        "id": "T%7C%3FC",
+        "type": "relation",
+        "relation": [],
+        "has_more": false
+      },
+      "Last edited time": {
+        "id": "%5BMj%60",
+        "type": "last_edited_time",
+        "last_edited_time": "2024-07-21T15:59:00.000Z"
+      },
+      "Slug": {
+        "id": "title",
+        "type": "title",
+        "title": [
+          {
+            "type": "text",
+            "text": {
+              "content": "KanjiMasuta",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "KanjiMasuta",
+            "href": null
+          }
+        ]
+      }
+    },
+    "url": "https://www.notion.so/KanjiMasuta-406f3a15aef6434cb417834cf0812c11",
+    "public_url": null
   }
 }
 
