@@ -18,8 +18,10 @@ block content
           .col-12 
             input.form-control.form-control-sm#txtTimKiem(type="text" name="txtTimKiem" placeholder="Nhập chữ hán" value=name data-id=id)
         .row.mt-1
-          .col-4 
+          .col-6 
             button.btn.btn-sm.btn-primary.w-100#btnTimKiem Tìm kiếm
+          .col-6 
+            button.btn.btn-sm.btn-success.w-100.disable#btnLuu Lưu
         .row.mt-1
           label.col-2.col-form-label Từ
           .col-4
@@ -39,6 +41,11 @@ block content
         .row.mt-1
           label.col-2.col-form-label Giáo trình
           .col-10
+            .row#boxSLGiaoTrinh
+              select.col.form-control.form-control-sm.mx-2#slChuDe0(name="slChuDe0" data-type="#boxGiaoTrinh" data-i="0" data-check="1")
+                option(value="test" data-id="test" data-name="test") test
+        .row.mt-1 
+          .col-10.offset-2
             #boxGiaoTrinh
                 span.badge.rounded-pill.text-bg-success.mx-1(data-id="test" data-name="test") test
         .row.mt-1
@@ -91,6 +98,10 @@ block content
         .row.mt-1
           label.col-2.col-form-label Chủ đề
           .col-10
+            select.form-control.form-control-sm#slChuDe(name="slChuDe" data-type="#boxChuDe")
+              option(value="test" data-id="test" data-name="test") test
+        .row.mt-1 
+          .col-10.offset-2
             #boxChuDe
                 span.badge.rounded-pill.text-bg-success.mx-1(data-id="test" data-name="test") test
         .row.mt-1
