@@ -1,0 +1,14 @@
+extends ../component
+
+block content
+  .container.mt-3 
+    .row 
+      .col 
+        +card-basic({
+          header: 'header',
+          content: '<b>test</b>',
+        })
+
+block js
+  script(src="/javascripts/TuVung/DetailComponent.js")
+  script(src="/javascripts/TuVung/DetailModal.js") 

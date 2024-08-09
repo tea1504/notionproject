@@ -1,0 +1,10 @@
+include components/components.pug
+
+.fixed-top#loaderModal(style="background-color:#55555555; height:100vh; width:100wh;")
+      .spinner-border.text-dark.position-absolute.top-50.start-50(role="status")
+        .visually-hidden loading...
+
+block content
+
+script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js") 
+block js

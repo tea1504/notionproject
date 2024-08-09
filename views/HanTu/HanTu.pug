@@ -12,6 +12,12 @@ block content
           id: "btnTestLink_HanTu",
           content: 'Đi đến trang chi tiết 倍'
         })
+    .row 
+      .col 
+        // Button trigger modal
+        button.btn.btn-primary#btnShowModal(type='button' data-bs-toggle='modal' data-bs-target='#modalTuVung')
+          | Launch demo modal
+        include ../TuVung/DetailModal.pug
 
 block js
   script(src="/javascripts/HanTu/index.js") 
