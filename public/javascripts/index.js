@@ -1,3 +1,8 @@
+$(document).ready(async () => {
+  Loader(true);
+});
+
+
 function Loader(hide = true){
   if(hide){
     $(`#loader`).addClass('d-none');
