@@ -6,9 +6,11 @@ $(document).ready(async () => {
 function Loader(hide = true){
   if(hide){
     $(`#loader`).addClass('d-none');
+    $(`#loaderModal`).addClass('d-none');
   }
   else{
     $(`#loader`).removeClass('d-none');
+    $(`#loaderModal`).removeClass('d-none');
   }
 }
 

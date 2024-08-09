@@ -1,0 +1,12 @@
+-var title="Từ vựng"
+#modalTuVung.modal.fade(tabindex='-1' aria-labelledby='DetailModalLabel' aria-hidden='true')
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        h5#DetailModalLabel.modal-title=title
+        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+      .modal-body
+        include DetailComponent.pug
+      .modal-footer
+        button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+        button.btn.btn-primary(type='button') Save changes

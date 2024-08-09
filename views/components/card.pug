@@ -1,0 +1,5 @@
+mixin card-basic(args)
+  .card.border-primary.mb-3(style='max-width: 18rem;')
+    .card-header=args.header ? args.header : ""
+    .card-body.text-primary
+      p.card-text!=args.content ? args.content : ""
