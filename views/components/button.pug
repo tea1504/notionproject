@@ -1,0 +1,12 @@
+mixin button(args)
+  if args.link 
+    a(
+      href=args.href ? args.href : "#"
+      class=args.class ? args.class + " btn" : "btn"
+      id=args.id ? args.id : ""
+      )=args.content ? args.content : ""
+  else 
+    button(
+      class=args.class ? args.class + " btn" : "btn"
+      id=args.id ? args.id : ""
+    )=args.content ? args.content : ""

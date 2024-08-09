@@ -3,5 +3,22 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css")
   body
+    .fixed-top#loader(style="background-color:#55555555; height:100vh; width:100wh;")
+      .spinner-border.text-dark.position-absolute.top-50.start-50(role="status")
+        .visually-hidden loading...
+
+    include components/components.pug
+    include partials/head.pug
+
     block content
+
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js") 
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js") 
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js") 
+
+    script(src="/javascripts/utils.js")
+    script(src="/javascripts/index.js")
+
+    block js
