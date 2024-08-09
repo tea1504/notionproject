@@ -119,9 +119,9 @@ async function LayDuLieuTuAPI(id = "", name = "", isLoad = false) {
 }
 
 function VeDuLieu() {
-  $(`a`).removeClass("d-none");
-  $(`a`).attr("href", duLieu.url);
-  $(`a`).text(duLieu.id);
+  $(`a#link`).removeClass("d-none");
+  $(`a#link`).attr("href", duLieu.url);
+  $(`a#link`).text(duLieu.id);
   $("#txtName").val(duLieu.name);
   VeBadge(duLieu.capDo, "#boxCapDo");
   VeBadge(duLieu.giaoTrinh, "#boxGiaoTrinh");
@@ -483,8 +483,8 @@ function ResetData() {
     viDu: []
   };
   $("#txtName").val("");
-  $("a").text("");
-  $("a").prop("href", "#");
+  $("a#link").text("");
+  $("a#link").prop("href", "#");
   $("#boxCapDo > span").remove();
   $("#boxGiaoTrinh > span").remove();
   $("#boxGiaoTrinh > span").remove();

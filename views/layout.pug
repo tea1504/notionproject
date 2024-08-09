@@ -9,6 +9,9 @@ html
       .spinner-border.text-dark.position-absolute.top-50.start-50(role="status")
         .visually-hidden loading...
 
+    include components/components.pug
+    include partials/head.pug
+
     block content
 
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js") 
