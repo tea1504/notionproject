@@ -434,3 +434,263 @@ exports.chuDe = {
     "public_url": null
   }
 }
+
+// tu vung
+exports.tuVung = {
+  page: {
+    "object": "page",
+    "id": "7fec9aed-6203-4194-8d06-caab03e735cc",
+    "created_time": "2024-07-20T13:45:00.000Z",
+    "last_edited_time": "2024-08-08T14:00:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "0057a200-ab9b-4b95-8b04-04aec4982cb0"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "597a43d1-4032-4464-aea3-90eaf30d8949"
+    },
+    "cover": null,
+    "icon": null,
+    "parent": {
+      "type": "database_id",
+      "database_id": "7d7e35de-8a8f-48c4-90e8-5208d7528d75"
+    },
+    "archived": false,
+    "in_trash": false,
+    "properties": {
+      "Phân loai 1": {
+        "id": "%3A%60DU",
+        "type": "multi_select",
+        "multi_select": []
+      },
+      "Ví dụ": {
+        "id": "C%60RP",
+        "type": "relation",
+        "relation": [
+          {
+            "id": "caafa9e6-55e4-4528-9a3f-677ab5c2fd67"
+          },
+          {
+            "id": "316e16c4-083b-4f2e-9908-89f3a3531257"
+          },
+          {
+            "id": "8f4d849e-7763-45df-9b4f-8858c9242343"
+          }
+        ],
+        "has_more": false
+      },
+      "Giáo trình": {
+        "id": "E%40sK",
+        "type": "relation",
+        "relation": [
+          {
+            "id": "9e3d6aff-668d-4c31-8b79-b4aa04d010bd"
+          }
+        ],
+        "has_more": false
+      },
+      "Nghĩa": {
+        "id": "GfW%5E",
+        "type": "rich_text",
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "Tuổi tác",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "Tuổi tác",
+            "href": null
+          }
+        ]
+      },
+      "Chủ đề": {
+        "id": "L%7DZy",
+        "type": "relation",
+        "relation": [],
+        "has_more": false
+      },
+      "Last edited time": {
+        "id": "Nub%5B",
+        "type": "last_edited_time",
+        "last_edited_time": "2024-08-08T14:00:00.000Z"
+      },
+      "Liên quan": {
+        "id": "ODx%40",
+        "type": "relation",
+        "relation": [],
+        "has_more": false
+      },
+      "Phân loại 3": {
+        "id": "O_pL",
+        "type": "multi_select",
+        "multi_select": []
+      },
+      "Date": {
+        "id": "RKs%7D",
+        "type": "date",
+        "date": null
+      },
+      "Đồng nghĩa": {
+        "id": "TMxV",
+        "type": "relation",
+        "relation": [
+          {
+            "id": "6efc974e-5612-4a5e-938c-528629c65fcd"
+          }
+        ],
+        "has_more": false
+      },
+      "Trợ từ": {
+        "id": "TRm%3D",
+        "type": "multi_select",
+        "multi_select": []
+      },
+      "Từ loại": {
+        "id": "Uuim",
+        "type": "relation",
+        "relation": [],
+        "has_more": false
+      },
+      "Trái nghĩa": {
+        "id": "Y%3C%7Dn",
+        "type": "relation",
+        "relation": [],
+        "has_more": false
+      },
+      "index": {
+        "id": "YzRu",
+        "type": "number",
+        "number": null
+      },
+      "slug": {
+        "id": "aShG",
+        "type": "rich_text",
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "nenrei",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "nenrei",
+            "href": null
+          }
+        ]
+      },
+      "Hán tự": {
+        "id": "f%7Cz%7C",
+        "type": "relation",
+        "relation": [
+          {
+            "id": "31f46034-ef2f-462c-9d4c-27cd5986555f"
+          },
+          {
+            "id": "74c1838b-5d8d-4fbe-9d2a-6e2ecf10e854"
+          }
+        ],
+        "has_more": false
+      },
+      "Created time": {
+        "id": "hhaN",
+        "type": "created_time",
+        "created_time": "2024-07-20T13:45:00.000Z"
+      },
+      "ふりがな": {
+        "id": "wKwd",
+        "type": "rich_text",
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "ねんれい",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "ねんれい",
+            "href": null
+          }
+        ]
+      },
+      "Phân loại 2": {
+        "id": "zWuh",
+        "type": "multi_select",
+        "multi_select": []
+      },
+      "Name": {
+        "id": "title",
+        "type": "title",
+        "title": [
+          {
+            "type": "text",
+            "text": {
+              "content": "年齢",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "年齢",
+            "href": null
+          }
+        ]
+      }
+    },
+    "url": "https://www.notion.so/7fec9aed620341948d06caab03e735cc",
+    "public_url": null
+  },
+  data: {
+    id: "",
+    url: "",
+    name: "",
+    furigana: "",
+  }
+}
+
+// tu loai
+exports.tuLoai = {
+  page: {},
+  data: {
+    id: "",
+    name: "",
+  }
+}
+
+
+// chu de
+exports.chuDe = {
+  page: {},
+  data: {
+    id: "",
+    name: "",
+  }
+}

@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+  .container.mt-3
+    .row 
+      .col-2
+        .row 
+          .col
+            +input({
+              id: "txtDanhSach_FlowChart",
+              hienNhan: "false"
+            })
+        .row.mt-1
+          .col(
+            style="height: 500px; overflow: auto;"
+          )
+            +list({
+              id:"lstDanhSach_FlowChart",
+              list:[]
+            })
+      .col-10
+        include FlowChartComponent.pug
+
+block js
+  script(src="/javascripts/TuVung/FlowChart.js") 

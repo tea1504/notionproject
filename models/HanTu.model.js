@@ -16,8 +16,8 @@ exports.NAME = {
   NGHIA: "Nghĩa",
   SO_NET: "Số nét",
   CO_BO_THU: "Có bộ thủ",
-  CHU_DE:"Chủ đề",
-  LUC_THU:"Lục thư",
+  CHU_DE: "Chủ đề",
+  LUC_THU: "Lục thư",
 }
 
 exports.layNameID = async (page_id) => {
@@ -53,6 +53,52 @@ exports.layHanTuTuName = async (name) => {
   return null;
 }
 
+/**
+ * 
+ * @param {{
+ * id?:string,
+ * name?:string
+ * }} data 
+ * @param {boolean} isRelation 
+ * @returns 
+ */
+exports.timKiemHanTu = async (data, isRelation = true) => {
+  const database_id = process.env.HAN_TU;
+  var id = data.id;
+  var name = data.name;
+  var filter = {}
+  if (id) {
+    const result = await notion.pages.retrieve({
+      page_id: id
+    })
+    // @ts-ignore
+    return await this.LayDuLieu(result, isRelation);
+  }
+  else {
+    if (name) {
+      filter = {
+        property: "Name",
+        rich_text: {
+          equals: name ?? "",
+        },
+      }
+    }
+    const result2 = await notion.databases.query({
+      // @ts-ignore
+      database_id: database_id,
+      // @ts-ignore
+      filter: filter
+    });
+
+    if (result2.results.length > 0) {
+      // @ts-ignore
+      return await this.LayDuLieu(result2.results[0], isRelation);
+    }
+  }
+
+  return null;
+}
+
 exports.LayDuLieu = async (result = { ...utils.hanTu.page }) => {
   var properties = { ...utils.hanTu.page.properties }
   var capDo = [...utils.IDNames];
@@ -79,7 +125,7 @@ exports.LayDuLieu = async (result = { ...utils.hanTu.page }) => {
     giaoTrinh.push(await giaTrinhModel.layNameID(relation.id))
   }
   console.log(giaoTrinh);
-  
+
 
   // laBoThu
   laBoThu = [];
@@ -123,7 +169,7 @@ exports.LayDuLieu = async (result = { ...utils.hanTu.page }) => {
 
 exports.themMoiHanTu = async (data = { ...utils.hanTu.data }) => {
   console.log("themMoiHanTu");
-  
+
   var database_id = process.env.HAN_TU;
   var properties = await this.makeProperties(data);
 
@@ -136,7 +182,7 @@ exports.themMoiHanTu = async (data = { ...utils.hanTu.data }) => {
   });
 
   console.log(result);
-  
+
   return this.LayDuLieu(result);
 }
 
@@ -216,13 +262,13 @@ exports.makeProperties = async (data = { ...utils.hanTu.data }) => {
     properties[this.NAME.GIAO_TRINH] = { relation: [] };
     for (var item of data.giaoTrinh) {
       console.log(item);
-      
+
       if (await giaTrinhModel.timDanhSachGiaoTrinh(item.name)) {
         properties[this.NAME.GIAO_TRINH].relation.push({ id: item.id });
       };
     }
     console.log(properties[this.NAME.GIAO_TRINH]);
-    
+
   }
 
   if (data.hanViet) {
