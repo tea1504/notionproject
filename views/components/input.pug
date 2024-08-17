@@ -1,0 +1,23 @@
+﻿mixin input(args)
+  - var hienNhan = args.hienNhan ? args.hienNhan === "true" : true
+  - var id = args.id ? args.id : ""
+  - var label = args.label ? args.label : ""
+  - var chieuDaiLabel = args.chieuDaiLabel ? args.chieuDaiLabel : "130"
+  - var value = args.value ? args.value : ""
+  - var disabled = args.disabled ? args.disabled === "true" : false
+  - var batBuoc = args.batBuoc ? args.batBuoc === "true" : false
+
+  .row.g-3.align-items-center
+    if hienNhan
+      .col-auto.text-end(style=`width: ${chieuDaiLabel}px`)
+        label.col-form-label(
+          for=id
+        )
+          !=batBuoc?`${label}<strong class="text-danger">*</strong>`:label
+    .col
+      input.form-control(
+        id=id
+        type='text'
+        value=value
+        disabled=disabled
+      )

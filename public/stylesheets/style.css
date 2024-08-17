@@ -1,3 +1,7 @@
 span.badge {
   cursor: pointer;
 }
+
+.check::after {
+  content: "✔";
+}

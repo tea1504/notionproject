@@ -1,0 +1,119 @@
+extends ../component
+
+block content
+  .container-fluid
+    .row 
+      .col-10
+        +input({
+          id: "txtTuVung_FlowChart",
+          label: "Nhập từ vựng",
+          value: name,
+          batBuoc: "true",
+        })
+      .col-2 
+        +button({
+          id: "btnTimKiem_FlowChart",
+          content: "Tìm kiếm",
+          class: "btn-primary",
+        })
+    .row.mt-1
+      .col-10
+        +input({
+          id: "txtUrl_FlowChart",
+          label: "Link",
+          disabled: "true",
+        })
+      .col-2 
+        +button({
+          id: "btnTruyCap_FlowChart",
+          content: "Truy cập",
+          class: "btn-link",
+          link: "#"
+        })
+    .row.mt-1 
+      .col-7 
+        +input({
+          id: "txtFurigana_FlowChart",
+          label: "Furigana",
+          disabled: "true",
+        })
+      .col-5 
+        +input({
+          id: "txtSLUG_FlowChart",
+          label: "Slug",
+          disabled: "true",
+          chieuDaiLabel: 50,
+        })
+    .row.mt-1 
+      .col 
+        +input({
+          id: "txtNghia_FlowChart",
+          label: "Nghĩa",
+          disabled: "true",
+        })
+    .row.mt-1 
+      .col-6 
+        +listBadge({
+          id: "lstDongNghia_FlowChart",
+          label: "Đồng nghĩa",
+          list: [],
+        })
+      .col-6 
+        +listBadge({
+          id: "lstTraiNghia_FlowChart",
+          label: "Trái nghĩa",
+          list: [],
+        })
+    .row.mt-1 
+      .col-12 
+        +listBadge({
+          id: "lstLienQuan_FlowChart",
+          label: "Liên quan",
+          list: [],
+        })
+    .row.mt-1 
+      .col-12 
+        +listBadge({
+          id: "lstHanTu_FlowChart",
+          label: "Hán tự",
+          list: [],
+        })
+    .row.mt-1 
+      .col 
+        +button({
+          id: "btnVe_FlowChart",
+          content: "Vẽ",
+          class: "btn-secondary",
+        })
+      .col 
+        +button({
+          id: "btnXemThu_FlowChart",
+          content: "Xem thử",
+          class: "btn-info",
+        })
+      .col 
+        +button({
+          id: "btnLuu_FlowChart",
+          content: "Lưu",
+          class: "btn-success",
+        })
+    .row.mt-1 
+      .col-4 
+        pre#result(data-id="") 
+      .col-8 
+        #graphDiv2
+
+block js
+  script(src="/javascripts/TuVung/FlowChartComponent.js")
+  script(type="module").
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+    const drawDiagram = async function (text = '') {
+      const graphDefinition = text;
+      const { svg } = await mermaid.render('div', graphDefinition);
+      $('#graphDiv2').append(svg);
+    };
+
+    $("#btnXemThu_FlowChart").on("click", async () => {
+      await drawDiagram($("#result").text());
+    });

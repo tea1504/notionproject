@@ -4,9 +4,10 @@ mixin button(args)
       href=args.href ? args.href : "#"
       class=args.class ? args.class + " btn" : "btn"
       id=args.id ? args.id : ""
+      target="_blank"
       )=args.content ? args.content : ""
   else 
     button(
-      class=args.class ? args.class + " btn" : "btn"
+      class=(args.class ? args.class : "") + " btn w-100"
       id=args.id ? args.id : ""
     )=args.content ? args.content : ""

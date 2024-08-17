@@ -1,0 +1,39 @@
+mixin list(args)
+  - var list = args.list ? args.list : []
+  - var id = args.id ? args.id : ""
+
+  ol.list-group(id=id)
+    each item in list
+      -
+        var id = item.id ? item.id : ""
+        var name = item.name ? item.name : item
+      li.list-group-item(
+        data-id=id 
+        data-name=name
+      )
+        =name
+
+mixin listBadge(args)
+  - var hienNhan = args.hienNhan ? args.hienNhan === "true" : true
+  - var id = args.id ? args.id : ""
+  - var label = args.label ? args.label : ""
+  - var chieuDaiLabel = args.chieuDaiLabel ? args.chieuDaiLabel : "130"
+  - var list = args.list ? args.list : []
+
+  .row.g-3.align-items-center(id=id)
+    if hienNhan
+      .col-auto.text-end(
+        id=`${id}_label`
+        style=`width: ${chieuDaiLabel}px`
+      )
+        label.col-form-label(
+          for=id
+        )
+          =label
+    .col(id=`${id}_box`)
+      each item in list
+        span.badge.rounded-pill.text-bg-success.p-2.m-1(
+          data-id=item.id
+          data-name=item.name
+        )
+          =item.name

@@ -82,6 +82,52 @@ exports.timDanhSachGiaoTrinhTheoCha = async (parent_id) => {
   return null;
 }
 
+/**
+ * 
+ * @param {{
+ * id?:string,
+ * name?:string
+ * }} data 
+ * @param {boolean} isRelation 
+ * @returns 
+ */
+exports.timKiemGiaoTrinh = async (data, isRelation = true) => {
+  const database_id = process.env.GIAO_TRINH;
+  var id = data.id;
+  var name = data.name;
+  var filter = {}
+  if (id) {
+    const result = await notion.pages.retrieve({
+      page_id: id
+    })
+    // @ts-ignore
+    return await this.LayDuLieu(result, isRelation);
+  }
+  else {
+    if (name) {
+      filter = {
+        property: "Name",
+        rich_text: {
+          equals: name ?? "",
+        },
+      }
+      const result2 = await notion.databases.query({
+        // @ts-ignore
+        database_id: database_id,
+        // @ts-ignore
+        filter: filter
+      });
+
+      if (result2.results.length > 0) {
+        // @ts-ignore
+        return await this.LayDuLieu(result2.results[0], isRelation);
+      }
+    }
+  }
+
+  return null;
+}
+
 exports.LayDuLieu = async (result = { ...utils.giaoTrinh.page }) => {
   var properties = { ...utils.giaoTrinh.page.properties }
 
@@ -89,7 +135,6 @@ exports.LayDuLieu = async (result = { ...utils.giaoTrinh.page }) => {
 
   return {
     id: result.id,
-    url: result.url,
     name: properties.Tên.rich_text.length > 0 ? properties.Tên.rich_text[0].plain_text : "",
   }
 }

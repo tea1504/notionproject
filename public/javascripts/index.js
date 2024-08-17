@@ -2,7 +2,6 @@ $(document).ready(async () => {
   Loader(true);
 });
 
-
 function Loader(hide = true){
   if(hide){
     $(`#loader`).addClass('d-none');
@@ -16,4 +15,8 @@ function Loader(hide = true){
 
 $("input").on("focus", function (event) {
   $(this).select();
+})
+
+$("#errorModal button").on("click", (e) => {
+  $("#errorModal").hide();
 })
