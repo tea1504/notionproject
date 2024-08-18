@@ -95,3 +95,21 @@ function VeDanhSach(ref, list, element) {
     ref.append(el);
   }
 }
+
+function VeThemDanhSach(ref, list, element) {
+  // Ve danh sach
+  for (var item_list of list) {
+    var el;
+    switch (element) {
+      case "li":
+        // @ts-ignore
+        el = VeLIElement(item_list.id, item_list.name);
+        break;
+      default:
+        // @ts-ignore
+        el = VeBadgeElement(item_list.id, item_list.name, "text-bg-secondary");
+        break;
+    }
+    ref.append(el);
+  }
+}

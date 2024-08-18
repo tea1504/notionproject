@@ -7,7 +7,7 @@ block content
         +input({
           id: "txtTimKiem_TV_Detail",
           hienNhan: "flase",
-          value: "生魚",
+          value: name,
         })
     .row.mt-1 
       .col-6 
@@ -51,8 +51,8 @@ block content
       .col-5 
         +input({
           id: "txtFurigana_Mazii_TV_Detail",
-          hienNhan: "flase",
-          disabled: "true",
+          hienNhan: "false",
+          readonly: "true",
         })
     .row.mt-1 
       .col-7 
@@ -64,7 +64,7 @@ block content
         +input({
           id: "txtSlug_Mazii_TV_Detail",
           hienNhan: "flase",
-          disabled: "true",
+          readonly: "true",
         })
     .row.mt-1 
       .col-7 
@@ -77,7 +77,7 @@ block content
         +input({
           id: "txtNghia_Mazii_TV_Detail",
           hienNhan: "flase",
-          disabled: "true",
+          readonly: "true",
           mutil: "true",
         })
     .row.mt-1 

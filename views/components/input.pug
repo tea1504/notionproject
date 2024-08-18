@@ -5,6 +5,7 @@
   - var chieuDaiLabel = args.chieuDaiLabel ? args.chieuDaiLabel : "130"
   - var value = args.value ? args.value : ""
   - var disabled = args.disabled ? args.disabled === "true" : false
+  - var readonly = args.readonly ? args.readonly === "true" : false
   - var batBuoc = args.batBuoc ? args.batBuoc === "true" : false
   - var mutil = args.mutil ? args.mutil === "true" : false
 
@@ -22,10 +23,12 @@
           type='text'
           value=value
           disabled=disabled
+          readonly=readonly
         )
       else 
         textarea.form-control(
           id=id
           value=value
           disabled=disabled
+          readonly=readonly
         ) 

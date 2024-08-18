@@ -6,7 +6,8 @@ exports.layTuVungPage = async (req, res, next) => {
 }
 
 exports.layTuVungPageChiTiet = async (req, res, next) => {
-  res.render('TuVung/Detail', { title: 'Từ vựng' });
+  var name = req.query.name;
+  res.render('TuVung/Detail', { title: 'Từ vựng', name: name });
 }
 
 exports.layTuVungPageFlowChart = async (req, res, next) => {
@@ -24,6 +25,38 @@ exports.timKiemTuVung = async (req, res, next) => {
     }
     else {
       res.json({ status: "404", data: result });
+    }
+  } catch(err) {
+    console.log(err);
+    res.json({ status: err.status || "500", data: err });
+  }
+}
+
+exports.themMoiTuVung = async (req, res, next) => {
+  try {
+    var data = req.body;
+    const result = await tuVungModel.themMoiTuVung(data);
+    if (result) {
+      res.json({ status: "200", data: result });
+    }
+    else {
+      res.json({ status: "404", data: null });
+    }
+  } catch(err) {
+    console.log(err);
+    res.json({ status: err.status || "500", data: err });
+  }
+}
+
+exports.capNhatTuVung = async (req, res, next) => {
+  try {
+    var data = req.body;
+    const result = await tuVungModel.capNhatTuVung(data);
+    if (result) {
+      res.json({ status: "200", data: result });
+    }
+    else {
+      res.json({ status: "404", data: null });
     }
   } catch(err) {
     console.log(err);

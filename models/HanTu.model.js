@@ -124,8 +124,6 @@ exports.LayDuLieu = async (result = { ...utils.hanTu.page }) => {
   for (var relation of relations) {
     giaoTrinh.push(await giaTrinhModel.layNameID(relation.id))
   }
-  console.log(giaoTrinh);
-
 
   // laBoThu
   laBoThu = [];
@@ -168,8 +166,6 @@ exports.LayDuLieu = async (result = { ...utils.hanTu.page }) => {
 }
 
 exports.themMoiHanTu = async (data = { ...utils.hanTu.data }) => {
-  console.log("themMoiHanTu");
-
   var database_id = process.env.HAN_TU;
   var properties = await this.makeProperties(data);
 
@@ -180,8 +176,6 @@ exports.themMoiHanTu = async (data = { ...utils.hanTu.data }) => {
     },
     properties
   });
-
-  console.log(result);
 
   return this.LayDuLieu(result);
 }
@@ -234,7 +228,6 @@ exports.capNhatHanTu = async (data = { ...utils.hanTu.data }) => {
 }
 
 exports.makeProperties = async (data = { ...utils.hanTu.data }) => {
-  console.log("makeProperties");
   var properties = {};
 
   if (data.name) {
@@ -261,14 +254,10 @@ exports.makeProperties = async (data = { ...utils.hanTu.data }) => {
   if (data.giaoTrinh) {
     properties[this.NAME.GIAO_TRINH] = { relation: [] };
     for (var item of data.giaoTrinh) {
-      console.log(item);
-
       if (await giaTrinhModel.timDanhSachGiaoTrinh(item.name)) {
         properties[this.NAME.GIAO_TRINH].relation.push({ id: item.id });
       };
     }
-    console.log(properties[this.NAME.GIAO_TRINH]);
-
   }
 
   if (data.hanViet) {

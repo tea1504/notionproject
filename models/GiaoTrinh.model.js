@@ -20,7 +20,6 @@ exports.layNameID = async (page_id) => {
 }
 
 exports.timDanhSachGiaoTrinh = async (name) => {
-  console.log("timDanhSachGiaoTrinh", name);
   const database_id = process.env.GIAO_TRINH;
   
   const result = await notion.databases.query({

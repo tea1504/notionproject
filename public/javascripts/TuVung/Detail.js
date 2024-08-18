@@ -18,7 +18,8 @@ $(document).ready(async () => {
   // @ts-ignore
   Loader(false);
   try {
-    //await GET(`/han-tu/tim-kiem?name=倍`);
+    await KhoiTao();
+    //await btnLuu_ClickAsync();
   } catch (error) {
     $('#errorModal').show();
     $('#errorModalContent').html(`<p>${error}</p>`);
@@ -36,6 +37,7 @@ $(document).on("click", "#lstDanhSach_TV_Detail", lstDanhSach_ClickAsync);
  * Sự kiện khi textbox Danh Sách thay đổi
  * @param {*} args 
  */
+// @ts-ignore
 // @ts-ignore
 // @ts-ignore
 function txtDanhSach_Change(args) {
@@ -74,7 +76,9 @@ async function lstDanhSach_ClickAsync(args) {
     var txtTu_value = $(args.target).data("name");
     // @ts-ignore
     txtTimKiem_ref.val(txtTu_value ?? "");
+    // @ts-ignore
     await KhoiTao();
+    await btnLuu_ClickAsync();
   } catch (error) {
     $('#errorModal').show();
     $('#errorModalContent').html(`<p>${error}</p>`);

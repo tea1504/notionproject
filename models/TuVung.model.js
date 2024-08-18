@@ -12,6 +12,20 @@ const giaoTrinhModel = require("./GiaoTrinh.model.js");
 const hanTuModel = require("./HanTu.model.js");
 const viDuModel = require("./ViDu.model.js");
 
+exports.NAME = {
+  NGHIA: "Nghĩa",
+  CHU_DE: "Chủ đề",
+  LIEN_QUAN: "Liên quan",
+  DONG_NGHIA: "Đồng nghĩa",
+  TRO_TU: "Trợ từ",
+  TU_LOAI: "Từ loại",
+  TRAI_NGHIA: "Trái nghĩa",
+  SLUG: "slug",
+  HAN_TU: "Hán tự",
+  FURIGANA: "ふりがな",
+  NAME: "Name",
+}
+
 /**
  * 
  * @param {{
@@ -25,8 +39,6 @@ exports.timKiemTuVung = async (data, isRelation = true) => {
   const database_id = process.env.TU_VUNG;
   var id = data.id;
   var name = data.name;
-  console.log(data);
-  
   var filter = {}
   if (id) {
     const result = await notion.pages.retrieve({
@@ -172,4 +184,174 @@ exports.LayRealtion = async (relations, loai) => {
     });
   }
   return result;
+}
+
+exports.themMoiTuVung = async (data = {...utils.tuVung.data}) => {
+  var database_id = process.env.TU_VUNG ?? "";
+  var properties = await this.makeProperties(data);
+
+  const result = await notion.pages.create({
+    "parent": {
+      "type": "database_id",
+      database_id
+    },
+    // @ts-ignore
+    properties
+  });
+  
+  // @ts-ignore
+  return this.LayDuLieu(result);
+}
+
+exports.capNhatTuVung = async (data = {...utils.tuVung.data}) => {
+  var properties = {};
+  properties = await this.makeProperties(data);
+
+  const result = await notion.pages.update({
+    page_id: data.id,
+    // @ts-ignore
+    properties
+  });
+
+  // @ts-ignore
+  return this.LayDuLieu(result);
+}
+
+/**
+ * 
+ * @param {typeof utils.tuVung.data} data 
+ * @returns 
+ */
+exports.makeProperties = async (data = {...utils.tuVung.data}) => {
+  var properties = {};
+
+  if (data.name) {
+    properties["Name"] = {
+      "title": [
+        {
+          "text": {
+            "content": data.name
+          }
+        }
+      ]
+    };
+  }
+
+  if (data.furigana) {
+    properties[this.NAME.FURIGANA] = {
+      "rich_text": [
+        {
+          "text": {
+            "content": data.furigana
+          }
+        }
+      ]
+    };
+  }
+
+  if (data.slug) {
+    properties[this.NAME.SLUG] = {
+      "rich_text": [
+        {
+          "text": {
+            "content": data.slug
+          }
+        }
+      ]
+    };
+  }
+
+  if (data.slug) {
+    properties[this.NAME.SLUG] = {
+      "rich_text": [
+        {
+          "text": {
+            "content": data.slug
+          }
+        }
+      ]
+    };
+  }
+
+  if (data.nghia) {
+    properties[this.NAME.NGHIA] = {
+      "rich_text": [
+        {
+          "text": {
+            "content": data.nghia
+          }
+        }
+      ]
+    };
+  }
+
+  // tuLoai
+  // giaoTrinh
+  
+  // hanTu
+  if (data.hanTu) {
+    properties[this.NAME.HAN_TU] = { relation: [] };
+    for (var item of data.hanTu) {
+      var resHanTu = await hanTuModel.timKiemHanTu({name: item.name}, false)
+      if (resHanTu) {
+        properties[this.NAME.HAN_TU].relation.push({ id: resHanTu.id });
+      }
+      else {
+        // @ts-ignore
+        resHanTu = await hanTuModel.themMoiHanTu({name: item.name});
+        properties[this.NAME.HAN_TU].relation.push({ id: resHanTu.id });
+      }
+    }
+  }
+
+  // dongNghia
+  if (data.dongNghia) {
+    properties[this.NAME.DONG_NGHIA] = { relation: [] };
+    for (var item of data.dongNghia) {
+      var resDongNghia = await this.timKiemTuVung({name: item.name}, false)
+      if (resDongNghia) {
+        properties[this.NAME.DONG_NGHIA].relation.push({ id: resDongNghia.id });
+      }
+      else {
+        // @ts-ignore
+        resDongNghia = await this.themMoiTuVung({name: item.name});
+        properties[this.NAME.DONG_NGHIA].relation.push({ id: resDongNghia.id });
+      }
+    }
+  }
+
+  // traiNghia
+  if (data.traiNghia) {
+    properties[this.NAME.TRAI_NGHIA] = { relation: [] };
+    for (var item of data.traiNghia) {
+      var resTraiNghia = await this.timKiemTuVung({name: item.name}, false)
+      if (resTraiNghia) {
+        properties[this.NAME.TRAI_NGHIA].relation.push({ id: resTraiNghia.id });
+      }
+      else {
+        // @ts-ignore
+        resTraiNghia = await this.themMoiTuVung({name: item.name});
+        properties[this.NAME.TRAI_NGHIA].relation.push({ id: resTraiNghia.id });
+      }
+    }
+  }
+
+  // lienQuan
+  if (data.lienQuan) {
+    properties[this.NAME.LIEN_QUAN] = { relation: [] };
+    for (var item of data.lienQuan) {
+      var resLienQuan = await this.timKiemTuVung({name: item.name}, false)
+      if (resLienQuan) {
+        properties[this.NAME.LIEN_QUAN].relation.push({ id: resLienQuan.id });
+      }
+      else {
+        // @ts-ignore
+        resLienQuan = await this.themMoiTuVung({name: item.name});
+        properties[this.NAME.LIEN_QUAN].relation.push({ id: resLienQuan.id });
+      }
+    }
+  }
+  // viDu
+
+  return properties;
 }

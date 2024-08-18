@@ -2,7 +2,7 @@
 var duLieuPhanTuTrongDanhSach = { id: "", name: "" }
 var duLieuDanhSach = [{ ...duLieuPhanTuTrongDanhSach }];
 var duLieuNhanDuoc = {
-  id: "", url: "", ame: "", furigana: "",
+  id: "", url: "", name: "", furigana: "",
   dongNghia: [], traiNghia: [], lienQuan: [],
   slug: "", nghia: "",
   tuLoai: [], chuDe: [], giaoTrinh: [],
@@ -88,13 +88,70 @@ async function LayDuLieuTuVungAsync() {
   }
   // @ts-ignore
   const result = await GET(`/tu-vung/tim-kiem?name=${name}`);
-  // Nếu không tìm thấy thì thông báo lỗi và dừng lại
-  if (result.status === "404") {
-    throw ("Không tìm thấy từ vựng");
+  if (result.status == "404") {
+    return {...duLieuNhanDuoc}
   }
-  console.log(result);
-
+  // Nếu không tìm thấy thì thông báo lỗi và dừng lại
+  if (result.status != "200") {
+    throw ("Lỗi khi lấy dữ liệu");
+  }
   return result.data;
+}
+
+/**
+ * 
+ * @returns 
+ */
+async function LayDuLieuTuVungMaziiAsync() {
+  var name = txtTimKiem_ref.val();
+  var duLieuMazzi = { ...duLieuNhanDuoc }
+  duLieuMazzi = {};
+
+  if (!name) {
+    throw ("Nhập từ vựng");
+  }
+  const result = await POST("https://mazii.net/api/search", {
+    dict: "javi",
+    type: "word",
+    query: name,
+    page: 1,
+    limit: 1
+  })
+  if (result.status != "200") {
+    throw ("Lỗi khi lấy dữ liệu từ mazzi")
+  }
+  if (result.data && result.data.length > 0) {
+    duLieuMazzi.furigana = "";
+    if (result.data[0].phonetic) {
+      duLieuMazzi.furigana = result.data[0].phonetic.replace(/ /g, ", ");
+    }
+    duLieuMazzi.slug = wanakana.toRomaji(duLieuMazzi.furigana);
+    duLieuMazzi.nghia = "";
+    if (result.data[0].short_mean) {
+      duLieuMazzi.nghia = result.data[0].short_mean;
+    }
+    duLieuMazzi.tuLoai = [];
+    if (result.data[0].means.length > 0) {
+      for (var item of [...result.data[0].means]) {
+        // todo
+      }
+    }
+    duLieuMazzi.hanTu = [];
+    const resultHanTu = await POST("https://mazii.net/api/search", {
+      dict: "javi",
+      type: "kanji",
+      query: name,
+      page: 1
+    })
+    if (resultHanTu.status == "200") {
+      if (resultHanTu.results.length > 0) {
+        duLieuMazzi.hanTu = resultHanTu.results.map(e => {
+          return { name: e.kanji, id: "" };
+        });
+      }
+    }
+  }
+  return duLieuMazzi;
 }
 
 /**
@@ -103,14 +160,21 @@ async function LayDuLieuTuVungAsync() {
 async function KhoiTao() {
   const result = await LayDuLieuTuVungAsync();
   VeDuLieuLenManHinh(result);
+  const resultMazii = await LayDuLieuTuVungMaziiAsync();
+  VeDuLieuLenManHinh(resultMazii, "mazii");
 }
 
+
 btnTimKiem_ref.on("click", btnTimKiem_ClickAsync);
-txtHanTu_ref.on("focusout", txtHanTu_Focusout);
-txtDongNghia_ref.on("focusout", txtDongNghia_Focusout);
-txtTraiNghia_ref.on("focusout", txtTraiNghia_Focusout);
-txtLienQuan_ref.on("focusout", txtLienQuan_Focusout);
-txtViDu_ref.on("focusout", txtViDu_Focusout);
+btnLuu_ref.on("click", btnLuu_ClickAsync)
+txtHanTu_ref.on("focusout", () => Text_Focusout(txtHanTu_ref, lstHanTu_box_ref));
+txtDongNghia_ref.on("focusout", () => Text_Focusout(txtDongNghia_ref, lstDongNghia_box_ref));
+txtTraiNghia_ref.on("focusout", () => Text_Focusout(txtTraiNghia_ref, lstTraiNghia_box_ref));
+txtLienQuan_ref.on("focusout", () => Text_Focusout(txtLienQuan_ref, lstLienQuan_box_ref));
+txtViDu_ref.on("focusout", () => Text_Focusout(txtViDu_ref, lstViDu_box_ref));
+txtFurigana_Mazii_ref.on("click", () => Mazii_Click(txtFurigana_ref, txtFurigana_Mazii_ref));
+txtSlug_Mazii_ref.on("click", () => Mazii_Click(txtSlug_ref, txtSlug_Mazii_ref));
+txtNghia_Mazii_ref.on("click", () => Mazii_Click(txtNghia_ref, txtNghia_Mazii_ref));
 //#endregion
 
 //#region Sự kiện
@@ -134,83 +198,68 @@ async function btnTimKiem_ClickAsync() {
 /**
  * 
  */
+async function btnLuu_ClickAsync() {
+  try {
+    // @ts-ignore
+    Loader(false);
+    var result = null;
+    var duLieu = {};
+    duLieu["id"] = txtID_ref.val();
+    duLieu["furigana"] = txtFurigana_ref.val();
+    duLieu["slug"] = txtSlug_ref.val();
+    duLieu["nghia"] = txtNghia_ref.val();
+    duLieu["tuLoai"] = LayDanhSach([...lstTuLoai_box_ref.children()]);
+    duLieu["giaoTrinh"] = LayDanhSach([...lstGiaoTrinh_box_ref.children()]);
+    duLieu["hanTu"] = LayDanhSach([...lstHanTu_box_ref.children()]);
+    duLieu["dongNghia"] = LayDanhSach([...lstDongNghia_box_ref.children()]);
+    duLieu["traiNghia"] = LayDanhSach([...lstTraiNghia_box_ref.children()]);
+    duLieu["lienQuan"] = LayDanhSach([...lstLienQuan_box_ref.children()]);
+    duLieu["viDu"] = LayDanhSach([...lstViDu_box_ref.children()]);
+    if (duLieu.id) {
+      result = await POST("/tu-vung/cap-nhat", duLieu);
+    }
+    else {
+      duLieu["name"] = txtTimKiem_ref.val();
+      result = await POST("/tu-vung/them-moi", duLieu);
+    }
+    if (result) {
+      if (result.status != "200") {
+        throw ("Lỗi khi cập nhật");
+      }
+      VeDuLieuLenManHinh(result.data);
+    }
+  } catch (error) {
+    $('#errorModal').show();
+    $('#errorModalContent').html(`<p>${error}</p>`);
+  } finally {
+    // @ts-ignore
+    Loader(true);
+  }
+}
+
+/**
+ * 
+ */
 function lstHanTuBox_Change(event) {
   $(event.target).remove();
 }
 
-/**
- * 
- */
-function txtHanTu_Focusout() {
-  var val = txtHanTu_ref.val();
+function Text_Focusout(ref, box_ref) {
+  var val = ref.val();
+  var list = [];
   if (val) {
-    for (var v of val.split(",")) {
-      if (v) {
-        lstHanTu_box_ref.append(VeBadgeElement("", v, "text-bg-secondary"));
+    for (var name of val.split(",")) {
+      if (name) {
+        list.push({id:"", name})
       }
     }
   }
-  txtHanTu_ref.val("");
+  VeThemDanhSach(box_ref, list, "badge");
+  ref.val("");
 }
 
-/**
- * 
- */
-function txtDongNghia_Focusout() {
-  var val = txtDongNghia_ref.val();
-  if (val) {
-    for (var v of val.split(",")) {
-      if (v) {
-        lstDongNghia_box_ref.append(VeBadgeElement("", v, "text-bg-secondary"));
-      }
-    }
-  }
-  txtDongNghia_ref.val("");
-}
-
-/**
- * 
- */
-function txtTraiNghia_Focusout() {
-  var val = txtTraiNghia_ref.val();
-  if (val) {
-    for (var v of val.split(",")) {
-      if (v) {
-        lstTraiNghia_box_ref.append(VeBadgeElement("", v, "text-bg-secondary"));
-      }
-    }
-  }
-  txtTraiNghia_ref.val("");
-}
-
-/**
- * 
- */
-function txtLienQuan_Focusout() {
-  var val = txtLienQuan_ref.val();
-  if (val) {
-    for (var v of val.split(",")) {
-      if (v) {
-        lstLienQuan_box_ref.append(VeBadgeElement("", v, "text-bg-secondary"));
-      }
-    }
-  }
-  txtLienQuan_ref.val("");
-}
-
-/**
- * 
- */
-function txtViDu_Focusout() {
-  var val = txtViDu_ref.val();
-  if (val) {
-    for (var v of val.split(",")) {
-      if (v) {
-        lstViDu_box_ref.append(VeBadgeElement("", v, "text-bg-secondary"));
-      }
-    }
-  }
-  txtViDu_ref.val("");
+function Mazii_Click(notion, mazii) {
+  notion.val(mazii.val());
 }
 //#endregion
 
@@ -219,26 +268,47 @@ function txtViDu_Focusout() {
  * 
  * @param {typeof duLieuNhanDuoc} duLieu 
  */
-function VeDuLieuLenManHinh(duLieu) {
-  txtTu_ref.val(duLieu.name);
-  txtID_ref.val(duLieu.id);
-  btnID_ref.prop("href", duLieu.url);
-  txtFurigana_ref.val(duLieu.furigana);
-  txtSlug_ref.val(duLieu.slug);
-  txtNghia_ref.val(duLieu.nghia);
-  lstTuLoai_list = duLieu.tuLoai ?? [];
-  VeDanhSach(lstTuLoai_box_ref, lstTuLoai_list, "badge");
-  lstGiaoTrinh_list = duLieu.giaoTrinh ?? [];
-  VeDanhSach(lstGiaoTrinh_box_ref, lstGiaoTrinh_list, "badge");
-  lstHanTu_list = duLieu.hanTu ?? [];
-  VeDanhSach(lstHanTu_box_ref, lstHanTu_list, "badge");
-  lstDongNghia_list = duLieu.dongNghia ?? [];
-  VeDanhSach(lstDongNghia_box_ref, lstDongNghia_list, "badge");
-  lstTraiNghia_list = duLieu.traiNghia ?? [];
-  VeDanhSach(lstTraiNghia_box_ref, lstTraiNghia_list, "badge");
-  lstLienQuan_list = duLieu.lienQuan ?? [];
-  VeDanhSach(lstLienQuan_box_ref, lstLienQuan_list, "badge");
-  lstViDu_list = duLieu.viDu ?? [];
-  VeDanhSach(lstViDu_box_ref, lstViDu_list, "badge");
+function VeDuLieuLenManHinh(duLieu, type = "notion") {
+  switch (type) {
+    case "notion":
+      txtTu_ref.val(duLieu.name);
+      txtID_ref.val(duLieu.id);
+      btnID_ref.prop("href", duLieu.url);
+      txtFurigana_ref.val(duLieu.furigana);
+      txtSlug_ref.val(duLieu.slug);
+      txtNghia_ref.val(duLieu.nghia);
+      lstTuLoai_list = duLieu.tuLoai ?? [];
+      VeDanhSach(lstTuLoai_box_ref, lstTuLoai_list, "badge");
+      lstGiaoTrinh_list = duLieu.giaoTrinh ?? [];
+      VeDanhSach(lstGiaoTrinh_box_ref, lstGiaoTrinh_list, "badge");
+      lstHanTu_list = duLieu.hanTu ?? [];
+      VeDanhSach(lstHanTu_box_ref, lstHanTu_list, "badge");
+      lstDongNghia_list = duLieu.dongNghia ?? [];
+      VeDanhSach(lstDongNghia_box_ref, lstDongNghia_list, "badge");
+      lstTraiNghia_list = duLieu.traiNghia ?? [];
+      VeDanhSach(lstTraiNghia_box_ref, lstTraiNghia_list, "badge");
+      lstLienQuan_list = duLieu.lienQuan ?? [];
+      VeDanhSach(lstLienQuan_box_ref, lstLienQuan_list, "badge");
+      lstViDu_list = duLieu.viDu ?? [];
+      VeDanhSach(lstViDu_box_ref, lstViDu_list, "badge");
+      break;
+    case "mazii":
+      txtFurigana_Mazii_ref.val(duLieu.furigana);
+      if (!txtFurigana_ref.val()) {
+        txtFurigana_ref.val(duLieu.furigana);
+      }
+      txtSlug_Mazii_ref.val(duLieu.slug);
+      if (!txtSlug_ref.val()) {
+        txtSlug_ref.val(duLieu.slug);
+      }
+      txtNghia_Mazii_ref.val(duLieu.nghia);
+      if (!txtNghia_ref.val()) {
+        txtNghia_ref.val(duLieu.nghia);
+      }
+      VeThemDanhSach(lstHanTu_box_ref, duLieu.hanTu, "badge");
+      break;
+    default:
+      break;
+  }
 }
 //#endregion

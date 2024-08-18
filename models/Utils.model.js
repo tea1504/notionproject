@@ -673,6 +673,8 @@ exports.tuVung = {
     url: "",
     name: "",
     furigana: "",
+    slug: "",
+    nghia: "",
   }
 }
 
@@ -684,7 +686,6 @@ exports.tuLoai = {
     name: "",
   }
 }
-
 
 // chu de
 exports.chuDe = {
