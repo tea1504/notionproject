@@ -3,6 +3,7 @@
 //#region Dữ liệu mẫu
 var duLieuPhanTuTrongDanhSach = { id: "", name: "" }
 var duLieuDanhSach = [{ ...duLieuPhanTuTrongDanhSach }];
+// @ts-ignore
 var duLieuNhanDuoc = {
   id: "", name: "", url: "", furigana: "", slug: "",
   dongNghia: [...duLieuDanhSach], traiNghia: [...duLieuDanhSach],
@@ -107,36 +108,6 @@ btnLuu_ref.on("click", btnLuu_ClickAsync);
 
 //#region Hàm xử lý
 /**
- * Vẽ danh sách các từ vựng
- * @param {JQuery<HTMLElement>} ref 
- * @param {typeof duLieuDanhSach} list 
- * @param {string} element 
- */
-function VeDanhSach(ref, list, element) {
-  console.log(list);
-  
-  // Xóa danh sách
-  for (var item_ref of [...ref.children()]) {
-    item_ref.remove();
-  }
-  // Ve danh sach
-  for (var item_list of list) {
-    var el;
-    switch (element) {
-      case "li":
-        // @ts-ignore
-        el = VeLIElement(item_list.id, item_list.name);
-        break;
-      default:
-        // @ts-ignore
-        el = VeBadgeElement(item_list.id, item_list.name);
-        break;
-    }
-    ref.append(el);
-  }
-}
-
-/**
  * Vẽ dữ liệu lên màn hình
  * @param {typeof duLieuNhanDuoc} duLieu
  */
@@ -146,12 +117,16 @@ function VeDuLieuLenManHinh(duLieu) {
   txtFurigana_ref.val(duLieu.furigana);
   txtSLUG_ref.val(duLieu.slug);
   lstDongNghia_list = duLieu.dongNghia ?? [];
+  // @ts-ignore
   VeDanhSach(lstDongNghia_box_ref, lstDongNghia_list, "badge");
   lstTraiNghia_list = duLieu.traiNghia ?? [];
+  // @ts-ignore
   VeDanhSach(lstTraiNghia_box_ref, lstTraiNghia_list, "badge");
   lstLienQuan_list = duLieu.lienQuan ?? [];
+  // @ts-ignore
   VeDanhSach(lstLienQuan_box_ref, lstLienQuan_list, "badge");
   lstHanTu_list = duLieu.hanTu ?? [];
+  // @ts-ignore
   VeDanhSach(lstHanTu_box_ref, lstHanTu_list, "badge");
   txtNghia_ref.val(duLieu.nghia);
 }
@@ -217,6 +192,7 @@ function TaoChart() {
  * @param {*} args 
  */
 // @ts-ignore
+// @ts-ignore
 async function btnTimKiem_ClickAsync(args) {
   // @ts-ignore
   Loader(false);
@@ -245,6 +221,7 @@ async function btnTimKiem_ClickAsync(args) {
  * Sự kiện khi click vào nút [Vẽ]
  * @param {*} args 
  */
+// @ts-ignore
 // @ts-ignore
 function btnVe_Click(args) {
   // @ts-ignore
@@ -276,11 +253,13 @@ async function btnLuu_ClickAsync() {
       if (id) {
         console.log("/block/cap-nhat", id);
         // @ts-ignore
+        // @ts-ignore
         var result = await POST("/block/cap-nhat", { id, content });
       }
       else {
         id = txtUrl_ref.val()?.toString();
         console.log("/block/them", id);
+        // @ts-ignore
         // @ts-ignore
         var result = await POST("/block/them", { id, content });
       }

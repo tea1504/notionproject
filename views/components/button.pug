@@ -1,13 +1,20 @@
 mixin button(args)
-  if args.link 
+  - var id = args.id ? args.id : ""
+  - var href = args.href ? args.href : "#"
+  - var _class = args.class ? args.class + " btn w-100" : "btn w-100"
+  - var content = args.content ? args.content : ""
+  - var link = args.link ? args.link === "true" : false
+
+  if link
     a(
-      href=args.href ? args.href : "#"
-      class=args.class ? args.class + " btn" : "btn"
-      id=args.id ? args.id : ""
+      href=href
+      class=_class
+      id=id
       target="_blank"
-      )=args.content ? args.content : ""
+      )
+      =content
   else 
     button(
-      class=(args.class ? args.class : "") + " btn w-100"
-      id=args.id ? args.id : ""
-    )=args.content ? args.content : ""
+      class=_class
+      id=id
+    )=content

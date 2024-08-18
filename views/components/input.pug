@@ -6,18 +6,26 @@
   - var value = args.value ? args.value : ""
   - var disabled = args.disabled ? args.disabled === "true" : false
   - var batBuoc = args.batBuoc ? args.batBuoc === "true" : false
+  - var mutil = args.mutil ? args.mutil === "true" : false
 
   .row.g-3.align-items-center
     if hienNhan
       .col-auto.text-end(style=`width: ${chieuDaiLabel}px`)
-        label.col-form-label(
+        label.col-form-label.fw-bold(
           for=id
         )
           !=batBuoc?`${label}<strong class="text-danger">*</strong>`:label
     .col
-      input.form-control(
-        id=id
-        type='text'
-        value=value
-        disabled=disabled
-      )
+      if !mutil
+        input.form-control(
+          id=id
+          type='text'
+          value=value
+          disabled=disabled
+        )
+      else 
+        textarea.form-control(
+          id=id
+          value=value
+          disabled=disabled
+        ) 

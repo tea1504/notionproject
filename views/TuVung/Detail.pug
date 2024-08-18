@@ -1,9 +1,27 @@
 extends ../layout
 
 block content
-  include DetailComponent.pug
+  .container.mt-3
+    .row
+      .col-2
+        .row 
+          .col
+            +input({
+              id: "txtDanhSach_TV_Detail",
+              hienNhan: "false"
+            })
+        .row.mt-1
+          .col(
+            style="height: 500px; overflow: auto;"
+          )
+            +list({
+              id:"lstDanhSach_TV_Detail",
+            })
+      .col-10 
+        .row 
+          .col 
+            include DetailComponent.pug
 
 
 block js
-  script(src="/javascripts/TuVung/DetailComponent.js") 
   script(src="/javascripts/TuVung/Detail.js") 

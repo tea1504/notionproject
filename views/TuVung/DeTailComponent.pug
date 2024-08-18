@@ -1,14 +1,237 @@
 extends ../component
 
 block content
-  .container.mt-3 
+  .container-fluid
     .row 
       .col 
-        +card-basic({
-          header: 'header',
-          content: '<b>test</b>',
+        +input({
+          id: "txtTimKiem_TV_Detail",
+          hienNhan: "flase",
+          value: "生魚",
+        })
+    .row.mt-1 
+      .col-6 
+        +button({
+          id: "btnTimKiem_TV_Detail",
+          content: "Tìm kiếm",
+          class: "btn-primary",
+        })
+      .col-6 
+        +button({
+          id: "btnLuu_TV_Detail",
+          content: "Lưu",
+          class: "btn-success",
+        })
+    .row.mt-1 
+      .col-6 
+        +input({
+          id: "txtTu_TV_Detail",
+          label: "Từ",
+          disabled: "true",
+        })
+      .col-4 
+        +input({
+          id: "txtID_TV_Detail",
+          hienNhan: "flase",
+          disabled: "true",
+        })
+      .col-2
+        +button({
+          id: "btnID_TV_Detail",
+          link: "true",
+          class: "btn-link",
+          content: "Truy cập",
+        })
+    .row.mt-1 
+      .col-7 
+        +input({
+          id: "txtFurigana_TV_Detail",
+          label: "Furigana",
+        })
+      .col-5 
+        +input({
+          id: "txtFurigana_Mazii_TV_Detail",
+          hienNhan: "flase",
+          disabled: "true",
+        })
+    .row.mt-1 
+      .col-7 
+        +input({
+          id: "txtSlug_TV_Detail",
+          label: "SLUG",
+        })
+      .col-5 
+        +input({
+          id: "txtSlug_Mazii_TV_Detail",
+          hienNhan: "flase",
+          disabled: "true",
+        })
+    .row.mt-1 
+      .col-7 
+        +input({
+          id: "txtNghia_TV_Detail",
+          label: "Nghĩa",
+          mutil: "true",
+        })
+      .col-5 
+        +input({
+          id: "txtNghia_Mazii_TV_Detail",
+          hienNhan: "flase",
+          disabled: "true",
+          mutil: "true",
+        })
+    .row.mt-1 
+      .col-4 
+        .row 
+          .col-12 
+            +listBadge({
+              id: "lstTuLoai_TV_Detail",
+              label: "Từ loại",
+              chieuDaiLabel: "70",
+              list: [
+                {id:"id", name:"test"}
+              ],
+            })
+        .row 
+          .col-12 
+            +select({
+              id: "slcTuLoai_TV_Detail",
+              hienNhan: "false",
+              soKiTu: "6",
+              list: [
+                {id:"1", name:"test"},
+                {id:"12", name:"test1"},
+                {id:"123", name:"test2"},
+                {id:"1234", name:"test3"},
+                {id:"12345", name:"test4"},
+                {id:"123456", name:"test5"},
+              ],
+            })
+      .col-4 
+        .row 
+          .col-12 
+            +listBadge({
+              id: "lstGiaoTrinh_TV_Detail",
+              label: "Giáo trình",
+              chieuDaiLabel: "95",
+              list: [
+                {id:"id", name:"test"}
+              ],
+            })
+        .row 
+          .col-12
+            +select({
+              id: "slcGiaoTrinh_TV_Detail",
+              hienNhan: "false",
+              soKiTu: "6",
+              list: [
+                {id:"1", name:"test"},
+                {id:"12", name:"test1"},
+                {id:"123", name:"test2"},
+                {id:"1234", name:"test3"},
+                {id:"12345", name:"test4"},
+                {id:"123456", name:"test5"},
+              ],
+            })
+      .col-4 
+        .row 
+          .col-12 
+            +listBadge({
+              id: "lstHanTu_TV_Detail",
+              label: "Hán tự",
+              chieuDaiLabel: "70",
+              list: [
+                {id:"id", name:"test"},
+              ],
+            })
+        .row 
+          .col-12
+            +input({
+              id: "txtHanTu_TV_Detail",
+              hienNhan: "flase",
+              list: [
+                {id:"id", name:"test"},
+              ],
+            })
+    .row.mt-1 
+      .col-6 
+        .row 
+          .col-12 
+            +listBadge({
+              id: "lstDongNghia_TV_Detail",
+              label: "Đồng nghĩa",
+              chieuDaiLabel: "105",
+              list: [
+                {id:"id", name:"test"},
+              ],
+            })
+        .row 
+          .col-12
+            +input({
+              id: "txtDongNghia_TV_Detail",
+              hienNhan: "flase",
+              list: [
+                {id:"id", name:"test"},
+              ],
+            })
+      .col-6 
+        .row 
+          .col-12 
+            +listBadge({
+              id: "lstTraiNghia_TV_Detail",
+              label: "Trái nghĩa",
+              chieuDaiLabel: "95",
+              list: [
+                {id:"id", name:"test"},
+              ],
+            })
+        .row 
+          .col-12
+            +input({
+              id: "txtTraiNghia_TV_Detail",
+              hienNhan: "flase",
+              list: [
+                {id:"id", name:"test"},
+              ],
+            })
+    .row.mt-1  
+      .col-12 
+        +listBadge({
+          id: "lstLienQuan_TV_Detail",
+          label: "Liên quan",
+          chieuDaiLabel: "95",
+          list: [
+            {id:"id", name:"test"},
+          ],
+        })
+    .row.mt-1  
+      .col-12
+        +input({
+          id: "txtLienQuan_TV_Detail",
+          hienNhan: "flase",
+          list: [
+            {id:"id", name:"test"},
+          ],
+        })
+    .row.mt-1 
+        .col-12 
+          +listBadge({
+            id: "lstViDu_TV_Detail",
+            label: "Ví dụ",
+            chieuDaiLabel: "60",
+            list: [
+              {id:"id", name:"test"},
+            ],
+          })
+    .row 
+      .col-12
+        +input({
+          id: "txtViDu_TV_Detail",
+          hienNhan: "flase",
+          list: [
+            {id:"id", name:"test"},
+          ],
         })
 
 block js
   script(src="/javascripts/TuVung/DetailComponent.js")
-  script(src="/javascripts/TuVung/DetailModal.js") 

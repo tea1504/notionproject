@@ -34,7 +34,7 @@ async function POST(url = "", data = {}) {
 /**
  * Lấy danh sách từ màn hình
  * @param {object[]} array Danh sách trên màn hình
- * @returns Danh sách đã format
+ * @returns {{id:string, name:string}}
  */
 function LayDanhSach(array = []) {
   return array.map(e => {
@@ -59,9 +59,39 @@ function VeLIElement(id, name){
  * Vẽ bagde element
  * @param {string} id id
  * @param {string} name tên
+ * @param {string} class tên
  * @returns span.bagde element
  */
-function VeBadgeElement(id, name){
-  return `<span class="badge rounded-pill text-bg-success p-2 m-1" ` +
+function VeBadgeElement(id, name, _class = "text-bg-success"){
+  return `<span class="badge rounded-pill ${_class} p-2 m-1" ` +
   `data-id="${id}" data-name="${name}">${name}</span>`
+}
+
+//#region Hàm xử lý
+/**
+ * Vẽ danh sách các từ vựng
+ * @param {JQuery<HTMLElement>} ref 
+ * @param {typeof duLieuDanhSach} list 
+ * @param {string} element 
+ */
+function VeDanhSach(ref, list, element) {
+  // Xóa danh sách
+  for (var item_ref of [...ref.children()]) {
+    item_ref.remove();
+  }
+  // Ve danh sach
+  for (var item_list of list) {
+    var el;
+    switch (element) {
+      case "li":
+        // @ts-ignore
+        el = VeLIElement(item_list.id, item_list.name);
+        break;
+      default:
+        // @ts-ignore
+        el = VeBadgeElement(item_list.id, item_list.name);
+        break;
+    }
+    ref.append(el);
+  }
 }

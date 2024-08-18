@@ -1,0 +1,56 @@
+mixin select(args)
+  - var hienNhan = args.hienNhan ? args.hienNhan === "true" : true
+  - var id = args.id ? args.id : ""
+  - var label = args.label ? args.label : ""
+  - var chieuDaiLabel = args.chieuDaiLabel ? args.chieuDaiLabel : "130"
+  - var list = args.list ? args.list : []
+  - var soKiTu = args.soKiTu ? parseInt(args.soKiTu) : 0
+
+  .row.g-3.align-items-center
+    if hienNhan
+      .col-auto.text-end(style=`width: ${chieuDaiLabel}px`)
+        label.col-form-label.fw-bold(
+          for=id
+        )
+          !=batBuoc?`${label}<strong class="text-danger">*</strong>`:label
+    .col
+      .input-group 
+        input.form-control(
+          id=id
+          list=id+"_list"
+          onchange=`InputSelectOnChangeCommon('${id}')`
+          style=`max-width: ${soKiTu * 10 + 20}px`
+        )
+        datalist(
+          id=id+"_list"
+        )
+          option(
+              data-id
+              data-name
+              value
+            )
+            | Chọn giá trị
+          each item in list
+            option(
+              data-id=item.id
+              data-name=item.name
+              value=item.id
+              )
+              =item.name
+        input.form-control(
+          id=id+"_input",
+          disabled
+        )
+        button.btn.btn-outline-secondary(
+          id=id+"_button",
+        )
+          svg(
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-search"
+            viewBox="0 0 16 16"
+          )
+            path(
+              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0")

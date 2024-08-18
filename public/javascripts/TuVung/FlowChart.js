@@ -18,15 +18,23 @@ $(document).ready(async () => {
   // @ts-ignore
   Loader(false);
   try {
+    // @ts-ignore
     KhoiTaoDuLieu();
+    // @ts-ignore
     var result1 = await LayDuLieuTuVungAsync();
+    // @ts-ignore
     VeDuLieuLenManHinh(result1);
+    // @ts-ignore
     var result2 = await LayDuLieuBlockAsync(result1.id);
     if(result2.id) {
+      // @ts-ignore
       result_ref.text(result2.content);
+      // @ts-ignore
       result_ref.attr("data-id", result2.id);
     }
+    // @ts-ignore
     TaoChart();
+    // @ts-ignore
     await btnLuu_ClickAsync();
   } catch (error) {
     $('#errorModal').show();
@@ -45,6 +53,7 @@ $(document).on("click", "#lstDanhSach_FlowChart", lstDanhSach_ClickAsync);
  * Sự kiện khi textbox Danh Sách thay đổi
  * @param {*} args 
  */
+// @ts-ignore
 function txtDanhSach_Change(args) {
   try {
     var txtDanhSach_value = txtDanhSach_ref.val();
@@ -59,6 +68,7 @@ function txtDanhSach_Change(args) {
       })
     }
 
+    // @ts-ignore
     VeDanhSach(lstDanhSach_ref, lstDanhSach_list, "li");
   } catch (error) {
     $('#errorModal').show();
@@ -77,16 +87,25 @@ async function lstDanhSach_ClickAsync(args) {
     $(args.target).addClass("active");
     $(args.target).addClass("check");
     var txtTuVung_value = $(args.target).data("name");
+    // @ts-ignore
     txtTuVung_ref.val(txtTuVung_value ?? "");
+    // @ts-ignore
     KhoiTaoDuLieu();
+    // @ts-ignore
     var result1 = await LayDuLieuTuVungAsync();
+    // @ts-ignore
     VeDuLieuLenManHinh(result1);
+    // @ts-ignore
     var result2 = await LayDuLieuBlockAsync(result1.id);
     if(result2.id) {
+      // @ts-ignore
       result_ref.text(result2.content);
+      // @ts-ignore
       result_ref.attr("data-id", result2.id);
     }
+    // @ts-ignore
     TaoChart();
+    // @ts-ignore
     await btnLuu_ClickAsync();
   } catch (error) {
     $('#errorModal').show();
