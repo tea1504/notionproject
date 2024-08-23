@@ -1,4 +1,4 @@
-extends ../layout
+﻿extends ../layout
 
 block content
   .container.mt-3
@@ -20,8 +20,34 @@ block content
       .col-10 
         .row 
           .col 
+            +input({
+              id: "txtTimKiem_TV_Detail",
+              hienNhan: "flase",
+              value: name,
+            })
+        .row.mt-1 
+          .col-4 
+            +button({
+              id: "btnTimKiem_TV_Detail",
+              content: "Tìm kiếm",
+              class: "btn-primary",
+            })
+          .col-4 
+            +button({
+              id: "btnLuu_TV_Detail",
+              content: "Lưu",
+              class: "btn-success",
+            })
+          .col-4 
+            +button({
+              id: "btnFlowChart_TV_Detail",
+              content: "Xem FlowChart",
+              class: "btn-secondary",
+            })
+        .row 
+          .col 
             include DetailComponent.pug
 
-
 block js
+  script(src="/javascripts/TuVung/DetailComponent.js")
   script(src="/javascripts/TuVung/Detail.js") 

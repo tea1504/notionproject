@@ -1,0 +1,11 @@
+﻿#modalTuVungFlowChart.modal(tabindex='-1' aria-labelledby='DetailTuVungFlowChartModalLabel' aria-hidden='true')
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        h5#DetailTuVungFlowChartModalLabel.modal-title Flowchart từ vựng
+        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+      .modal-body
+        include FlowChartComponent.pug
+      .modal-footer
+        button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+        button.btn.btn-primary(type='button') Save changes

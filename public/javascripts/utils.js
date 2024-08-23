@@ -18,7 +18,7 @@ async function GET(url = "", query = "") {
  * Phương thức POST
  * @param {string} url Đường dẫn
  * @param {object} data Dữ liệu
- * @returns Dữ liệu
+ * @returns {object} Dữ liệu
  */
 async function POST(url = "", data = {}) {
   const response = await fetch(url, {

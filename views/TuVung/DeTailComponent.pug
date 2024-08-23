@@ -1,33 +1,11 @@
-extends ../component
-
-block content
-  .container-fluid
-    .row 
-      .col 
-        +input({
-          id: "txtTimKiem_TV_Detail",
-          hienNhan: "flase",
-          value: name,
-        })
-    .row.mt-1 
-      .col-6 
-        +button({
-          id: "btnTimKiem_TV_Detail",
-          content: "Tìm kiếm",
-          class: "btn-primary",
-        })
-      .col-6 
-        +button({
-          id: "btnLuu_TV_Detail",
-          content: "Lưu",
-          class: "btn-success",
-        })
+.container-fluid
     .row.mt-1 
       .col-6 
         +input({
           id: "txtTu_TV_Detail",
           label: "Từ",
           disabled: "true",
+          value: name,
         })
       .col-4 
         +input({
@@ -232,6 +210,3 @@ block content
             {id:"id", name:"test"},
           ],
         })
-
-block js
-  script(src="/javascripts/TuVung/DetailComponent.js")

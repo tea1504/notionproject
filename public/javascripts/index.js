@@ -2,6 +2,10 @@ $(document).ready(async () => {
   Loader(true);
 });
 
+/**
+ * 
+ * @param {boolean} hide
+ */
 function Loader(hide = true) {
   if (hide) {
     $(`#loader`).addClass('d-none');

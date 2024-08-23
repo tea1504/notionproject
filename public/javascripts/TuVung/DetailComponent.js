@@ -11,12 +11,6 @@ var duLieuNhanDuoc = {
 //#endregion
 
 //#region Biến
-// txtTimKiem
-var txtTimKiem_ref = $("#txtTimKiem_TV_Detail");
-// btnTimKiem
-var btnTimKiem_ref = $("#btnTimKiem_TV_Detail");
-// btnLuu
-var btnLuu_ref = $("#btnLuu_TV_Detail");
 // txtTu
 var txtTu_ref = $("#txtTu_TV_Detail");
 // txtID
@@ -79,12 +73,12 @@ lstViDu_list = [];
 //#region Khởi tạo
 /**
  * Lấy dữ liệu từ vựng
- * @returns {Promise<typeof duLieuNhanDuoc>}
+ * @returns {Promise<duLieuNhanDuoc>}
  */
 async function LayDuLieuTuVungAsync() {
-  var name = txtTimKiem_ref.val();
+  var name = txtTu_ref.val();
   if (!name) {
-    throw ("Nhập từ vựng");
+    throw ("LayDuLieuTuVungAsync: Nhập từ vựng");
   }
   // @ts-ignore
   const result = await GET(`/tu-vung/tim-kiem?name=${name}`);
@@ -103,12 +97,12 @@ async function LayDuLieuTuVungAsync() {
  * @returns 
  */
 async function LayDuLieuTuVungMaziiAsync() {
-  var name = txtTimKiem_ref.val();
+  var name = txtTu_ref.val();
   var duLieuMazzi = { ...duLieuNhanDuoc }
   duLieuMazzi = {};
 
   if (!name) {
-    throw ("Nhập từ vựng");
+    throw ("LayDuLieuTuVungMaziiAsync: Nhập từ vựng");
   }
   const result = await POST("https://mazii.net/api/search", {
     dict: "javi",
@@ -164,9 +158,6 @@ async function KhoiTao() {
   VeDuLieuLenManHinh(resultMazii, "mazii");
 }
 
-
-btnTimKiem_ref.on("click", btnTimKiem_ClickAsync);
-btnLuu_ref.on("click", btnLuu_ClickAsync)
 txtHanTu_ref.on("focusout", () => Text_Focusout(txtHanTu_ref, lstHanTu_box_ref));
 txtDongNghia_ref.on("focusout", () => Text_Focusout(txtDongNghia_ref, lstDongNghia_box_ref));
 txtTraiNghia_ref.on("focusout", () => Text_Focusout(txtTraiNghia_ref, lstTraiNghia_box_ref));
@@ -175,75 +166,18 @@ txtViDu_ref.on("focusout", () => Text_Focusout(txtViDu_ref, lstViDu_box_ref));
 txtFurigana_Mazii_ref.on("click", () => Mazii_Click(txtFurigana_ref, txtFurigana_Mazii_ref));
 txtSlug_Mazii_ref.on("click", () => Mazii_Click(txtSlug_ref, txtSlug_Mazii_ref));
 txtNghia_Mazii_ref.on("click", () => Mazii_Click(txtNghia_ref, txtNghia_Mazii_ref));
+$(document).on("contextmenu", "#lstHanTu_TV_Detail_box .badge", (event) => lstHanTu_Oncontextmenu(event));
+$(document).on("contextmenu", "#lstDongNghia_TV_Detail_box .badge", (event) => TuVung_Oncontextmenu(event));
+$(document).on("contextmenu", "#lstTraiNghia_TV_Detail_box .badge", (event) => TuVung_Oncontextmenu(event));
+$(document).on("contextmenu", "#lstLienQuan_TV_Detail_box .badge", (event) => TuVung_Oncontextmenu(event));
 //#endregion
 
 //#region Sự kiện
 /**
  * 
+ * @param {any} ref
+ * @param {any} box_ref
  */
-async function btnTimKiem_ClickAsync() {
-  try {
-    // @ts-ignore
-    Loader(false);
-    await KhoiTao();
-  } catch (error) {
-    $('#errorModal').show();
-    $('#errorModalContent').html(`<p>${error}</p>`);
-  } finally {
-    // @ts-ignore
-    Loader(true);
-  }
-}
-
-/**
- * 
- */
-async function btnLuu_ClickAsync() {
-  try {
-    // @ts-ignore
-    Loader(false);
-    var result = null;
-    var duLieu = {};
-    duLieu["id"] = txtID_ref.val();
-    duLieu["furigana"] = txtFurigana_ref.val();
-    duLieu["slug"] = txtSlug_ref.val();
-    duLieu["nghia"] = txtNghia_ref.val();
-    duLieu["tuLoai"] = LayDanhSach([...lstTuLoai_box_ref.children()]);
-    duLieu["giaoTrinh"] = LayDanhSach([...lstGiaoTrinh_box_ref.children()]);
-    duLieu["hanTu"] = LayDanhSach([...lstHanTu_box_ref.children()]);
-    duLieu["dongNghia"] = LayDanhSach([...lstDongNghia_box_ref.children()]);
-    duLieu["traiNghia"] = LayDanhSach([...lstTraiNghia_box_ref.children()]);
-    duLieu["lienQuan"] = LayDanhSach([...lstLienQuan_box_ref.children()]);
-    duLieu["viDu"] = LayDanhSach([...lstViDu_box_ref.children()]);
-    if (duLieu.id) {
-      result = await POST("/tu-vung/cap-nhat", duLieu);
-    }
-    else {
-      duLieu["name"] = txtTimKiem_ref.val();
-      result = await POST("/tu-vung/them-moi", duLieu);
-    }
-    if (result) {
-      if (result.status != "200") {
-        throw ("Lỗi khi cập nhật");
-      }
-      VeDuLieuLenManHinh(result.data);
-    }
-  } catch (error) {
-    $('#errorModal').show();
-    $('#errorModalContent').html(`<p>${error}</p>`);
-  } finally {
-    // @ts-ignore
-    Loader(true);
-  }
-}
-
-/**
- * 
- */
-function lstHanTuBox_Change(event) {
-  $(event.target).remove();
-}
-
 function Text_Focusout(ref, box_ref) {
   var val = ref.val();
   var list = [];
@@ -258,20 +192,48 @@ function Text_Focusout(ref, box_ref) {
   ref.val("");
 }
 
+/**
+ * 
+ * @param {any} notion
+ * @param {any} mazii
+ */
 function Mazii_Click(notion, mazii) {
   notion.val(mazii.val());
+}
+
+/**
+ * 
+ * @param {MouseEvent} event
+ */
+function lstHanTu_Oncontextmenu(event) {
+  event.preventDefault();
+  var id = $(event.target).data("id");
+  window.open(`/han-tu?id=${id}`, `popUpWindow${id}`, "resizable=no,scrollbars=no,toolbar=no,menubar=no,location=no,directories=no,status=no");
+}
+
+/**
+ * 
+ * @param {MouseEvent} event
+ */
+function TuVung_Oncontextmenu(event) {
+  event.preventDefault();
+  var name = $(event.target).text();
+  window.open(`/tu-vung/chi-tiet?modal=1&name=${name}`, `popUpWindow${name}`, "resizable=no,scrollbars=no,toolbar=no,menubar=no,location=no,directories=no,status=no");
 }
 //#endregion
 
 //#region Hàm xử lý
 /**
  * 
- * @param {typeof duLieuNhanDuoc} duLieu 
+ * @param {duLieuNhanDuoc} duLieu
+ * @param {string} type
  */
 function VeDuLieuLenManHinh(duLieu, type = "notion") {
   switch (type) {
     case "notion":
-      txtTu_ref.val(duLieu.name);
+      if (duLieu.name) {
+        txtTu_ref.val(duLieu.name);
+      }
       txtID_ref.val(duLieu.id);
       btnID_ref.prop("href", duLieu.url);
       txtFurigana_ref.val(duLieu.furigana);

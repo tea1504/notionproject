@@ -7,7 +7,11 @@ exports.layTuVungPage = async (req, res, next) => {
 
 exports.layTuVungPageChiTiet = async (req, res, next) => {
   var name = req.query.name;
-  res.render('TuVung/Detail', { title: 'Từ vựng', name: name });
+  var modal = req.query.modal;
+  if (modal) {
+    res.render('TuVung/DetailModal', { title: `${name} | Chi tiết từ vựng | Modal`, name: name });
+  }
+  res.render('TuVung/Detail', { title: `${name} | Chi tiết từ vựng`, name: name });
 }
 
 exports.layTuVungPageFlowChart = async (req, res, next) => {

@@ -51,6 +51,27 @@ $(document).ready(async () => {
   danhSachGiaoTrinh = [];
   danhSachGiaoTrinh.push(await LayDanhSachGiaoTrinhTuAPI());
   await TimKiem();
+
+  duLieu.hanViet = $("#txtHanViet").val();
+  duLieu.nghia = $("#txtNghia").val();
+  duLieu.soNet = $("#txtSoNet").val();
+  var val = $(`#boxSLGiaoTrinh > [data-check="1"]`).val();
+  if (val) {
+    duLieu.giaoTrinh.push({
+      id: val.split("/")[0],
+      name: val.split("/")[1],
+    })
+  }
+  console.log(duLieu);
+  if (duLieu.id) {
+    result = await POST(`han-tu/cap-nhat`, duLieu);
+  }
+  else {
+    result = await POST(`han-tu/them-moi`, duLieu);
+  }
+  ResetData();
+  duLieu = result.data;
+  await TimKiem()
   Loader(true);
 });
 
