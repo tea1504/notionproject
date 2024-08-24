@@ -1,4 +1,4 @@
-//@ts-check
+﻿//@ts-check
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -35,6 +35,10 @@ app.use('/chu-de', chuDeRouter);
 app.use('/giao-trinh', giaoTrinhRouter);
 app.use('/tu-vung', tuVungRouter);
 app.use('/block', blockRouter);
+app.use('/error', async (req, res, next) => {
+  var message = req.query.message;
+  res.render('partials/errorPopup', { message, title : "Lỗi"});
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

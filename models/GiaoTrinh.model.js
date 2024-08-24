@@ -83,10 +83,7 @@ exports.timDanhSachGiaoTrinhTheoCha = async (parent_id) => {
 
 /**
  * 
- * @param {{
- * id?:string,
- * name?:string
- * }} data 
+ * @param {any} data 
  * @param {boolean} isRelation 
  * @returns 
  */
@@ -94,6 +91,7 @@ exports.timKiemGiaoTrinh = async (data, isRelation = true) => {
   const database_id = process.env.GIAO_TRINH;
   var id = data.id;
   var name = data.name;
+  var slug = data.slug;
   var filter = {}
   if (id) {
     const result = await notion.pages.retrieve({
@@ -105,7 +103,7 @@ exports.timKiemGiaoTrinh = async (data, isRelation = true) => {
   else {
     if (name) {
       filter = {
-        property: "Name",
+        property: "Tên",
         rich_text: {
           equals: name ?? "",
         },
@@ -129,7 +127,6 @@ exports.timKiemGiaoTrinh = async (data, isRelation = true) => {
 
 exports.LayDuLieu = async (result = { ...utils.giaoTrinh.page }) => {
   var properties = { ...utils.giaoTrinh.page.properties }
-
   properties = result.properties;
 
   return {

@@ -36,6 +36,7 @@ lstTuLoai_list = [];
 var lstGiaoTrinh_ref = $("#lstGiaoTrinh_TV_Detail");
 var lstGiaoTrinh_box_ref = $("#lstGiaoTrinh_TV_Detail_box");
 var slcGiaoTrinh_ref = $("#slcGiaoTrinh_TV_Detail");
+var slcGiaoTrinhBtn_ref = $("#slcGiaoTrinh_TV_Detail_button");
 var lstGiaoTrinh_list = [...duLieuDanhSach];
 lstGiaoTrinh_list = [];
 // HanTu
@@ -170,6 +171,7 @@ $(document).on("contextmenu", "#lstHanTu_TV_Detail_box .badge", (event) => lstHa
 $(document).on("contextmenu", "#lstDongNghia_TV_Detail_box .badge", (event) => TuVung_Oncontextmenu(event));
 $(document).on("contextmenu", "#lstTraiNghia_TV_Detail_box .badge", (event) => TuVung_Oncontextmenu(event));
 $(document).on("contextmenu", "#lstLienQuan_TV_Detail_box .badge", (event) => TuVung_Oncontextmenu(event));
+slcGiaoTrinhBtn_ref.on("click", slcGiaoTrinhBtn_Click);
 //#endregion
 
 //#region Sự kiện
@@ -219,6 +221,18 @@ function TuVung_Oncontextmenu(event) {
   event.preventDefault();
   var name = $(event.target).text();
   window.open(`/tu-vung/chi-tiet?modal=1&name=${name}`, `popUpWindow${name}`, "resizable=no,scrollbars=no,toolbar=no,menubar=no,location=no,directories=no,status=no");
+}
+
+function slcGiaoTrinhBtn_Click() {
+  var mhTimGiaoTrinh = popupwindow(`/giao-trinh/tim-kiem`, `GiaoTrinhTimKiem`, 1000, 600);
+  Loader(false);
+  var timer = setInterval(function () {
+    if (mhTimGiaoTrinh.closed) {
+      console.log(mhTimGiaoTrinh.giaTriTraVe);
+      clearInterval(timer);
+      Loader(true);
+    }
+  }, 1000);
 }
 //#endregion
 

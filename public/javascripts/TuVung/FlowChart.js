@@ -15,9 +15,8 @@ lstDanhSach_list = [];
 
 //#region Khởi tạo
 $(document).ready(async () => {
-  // @ts-ignore
-  Loader(false);
   try {
+    Loader(false);
     // @ts-ignore
     KhoiTaoDuLieu();
     // @ts-ignore
@@ -36,12 +35,9 @@ $(document).ready(async () => {
     TaoChart();
     // @ts-ignore
     await btnLuu_ClickAsync();
-  } catch (error) {
-    $('#errorModal').show();
-    $('#errorModalContent').html(`<p>${error}</p>`);
-  } finally {
-    // @ts-ignore
     Loader(true);
+  } catch (error) {
+    popupError(error);
   }
 });
 txtDanhSach_ref.on("change", txtDanhSach_Change);
@@ -107,11 +103,9 @@ async function lstDanhSach_ClickAsync(args) {
     TaoChart();
     // @ts-ignore
     await btnLuu_ClickAsync();
-  } catch (error) {
-    $('#errorModal').show();
-    $('#errorModalContent').html(`<p>${error}</p>`);
-  } finally {
     Loader(true);
+  } catch (error) {
+    popupError(error);
   }
 }
 //#endregion

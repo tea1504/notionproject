@@ -43,3 +43,55 @@ function InputSelectOnChangeCommon(id) {
     $(`#${id}_input`).val(list[index].name);
   }
 }
+
+/**
+ * 
+ * @param {string} url
+ * @param {string} title
+ * @param {number} w
+ * @param {number} h
+ * @returns
+ */
+function popupwindow(url, title, w = 1000, h = 500) {
+  var left = (screen.width / 2) - (w / 2);
+  var top = (screen.height / 2) - (h / 2);
+  return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+}
+
+/**
+ * 
+ * @param {string} errorMessage
+ */
+function popupError(errorMessage) {
+  var errorPopup = popupwindow(`/error?message=${errorMessage}`, "errorPopup");
+  if (!errorPopup) {
+    Loader(true);
+    return;
+  }
+  Loader(false);
+  var timer = setInterval(function () {
+    if (errorPopup.closed) {
+      clearInterval(timer);
+      Loader(true);
+    }
+  }, 1000);
+}
+
+/**
+ * 
+ * @param {Event} event
+ * @param {any} onchange
+ */
+async function inputSearch_OnchangeAsync(event, onchange) {
+  var id = event.target.id.split("_")[0];
+  var ref_checkbox = $(`#${id}_checkbox`);
+  if (event.target.value) {
+    ref_checkbox.prop("checked", true);
+  }
+  else {
+    ref_checkbox.prop("checked", false);
+  }
+  if (onchange) {
+    await onchange();
+  }
+}

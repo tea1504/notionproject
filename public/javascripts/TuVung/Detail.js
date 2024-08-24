@@ -28,11 +28,8 @@ $(document).ready(async () => {
     await KhoiTao();
     await btnLuu_ClickAsync();
   } catch (error) {
-    $('#errorModal').show();
-    $('#errorModalContent').html(`<p>${error}</p>`);
-  } finally {
-    // @ts-ignore
-    Loader(true);
+    console.log(error);
+    popupError(error);
   }
 });
 
@@ -90,12 +87,9 @@ async function lstDanhSach_ClickAsync(args) {
     // @ts-ignore
     await KhoiTao();
     await btnLuu_ClickAsync();
-  } catch (error) {
-    $('#errorModal').show();
-    $('#errorModalContent').html(`<p>${error}</p>`);
-  } finally {
-    // @ts-ignore
     Loader(true);
+  } catch (error) {
+    popupError(error);
   }
 }
 
@@ -132,6 +126,9 @@ async function btnLuu_ClickAsync() {
       result = await POST("/tu-vung/cap-nhat", duLieu);
     }
     else {
+      if (!txtTimKiem_ref.val()) {
+        throw ("Chưa nhập tên")
+      }
       duLieu["name"] = txtTimKiem_ref.val();
       result = await POST("/tu-vung/them-moi", duLieu);
     }
@@ -141,12 +138,9 @@ async function btnLuu_ClickAsync() {
       }
       VeDuLieuLenManHinh(result.data);
     }
-  } catch (error) {
-    $('#errorModal').show();
-    $('#errorModalContent').html(`<p>${error}</p>`);
-  } finally {
-    // @ts-ignore
     Loader(true);
+  } catch (error) {
+    popupError(error);
   }
 }
 
@@ -158,12 +152,9 @@ async function btnTimKiem_ClickAsync() {
     // @ts-ignore
     Loader(false);
     await KhoiTao();
-  } catch (error) {
-    $('#errorModal').show();
-    $('#errorModalContent').html(`<p>${error}</p>`);
-  } finally {
-    // @ts-ignore
     Loader(true);
+  } catch (error) {
+    popupError(error);
   }
 }
 

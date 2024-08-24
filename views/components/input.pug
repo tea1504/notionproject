@@ -32,3 +32,46 @@
           disabled=disabled
           readonly=readonly
         ) 
+
+mixin inputSearch(args)
+  - var id = args.id ? args.id : ""
+  - var hienNhan = args.hienNhan ? args.hienNhan === "true" : true
+  - var label = args.label ? args.label : ""
+  - var chieuDaiLabel = args.chieuDaiLabel ? args.chieuDaiLabel : "130"
+  - var value = args.value ? args.value : ""
+  - var disabled = args.disabled ? args.disabled === "true" : false
+  - var readonly = args.readonly ? args.readonly === "true" : false
+  - var batBuoc = args.batBuoc ? args.batBuoc === "true" : false
+
+  .row.g-3.align-items-center(
+    id=id
+  )
+    .col-auto.checkbox
+      .form-check
+        input.form-check-input(
+          id=`${id}_checkbox`
+          type="checkbox"
+        )
+    if hienNhan
+      .col-auto.text-end(style=`width: ${chieuDaiLabel}px`)
+        label.col-form-label.fw-bold(
+          for=id
+        )
+          !=batBuoc?`${label}<strong class="text-danger">*</strong>`:label
+    .col
+      if !mutil
+        input.form-control(
+          id=`${id}_text`
+          type='text'
+          value=value
+          disabled=disabled
+          readonly=readonly
+          onchange=`inputSearch_OnchangeAsync(event,${args.onchange})`
+        )
+      else 
+        textarea.form-control(
+          id=id
+          value=value
+          disabled=disabled
+          readonly=readonly
+        ) 

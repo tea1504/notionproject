@@ -1,13 +1,11 @@
 $(document).ready(async () => {
-  Loader(false);
   try {
+    Loader(false);
     await KhoiTao();
     await LuuAsync();
-  } catch (error) {
-    $('#errorModal').show();
-    $('#errorModalContent').html(`<p>${error}</p>`);
-  } finally {
     Loader(true);
+  } catch (error) {
+    popupError(error);
   }
 });
 

@@ -208,12 +208,9 @@ async function btnTimKiem_ClickAsync(args) {
     else {
       TaoChart()
     }
-  } catch (error) {
-    $('#errorModal').show();
-    $('#errorModalContent').html(`<p>${error}</p>`);
-  } finally {
-    // @ts-ignore
     Loader(true);
+  } catch (error) {
+    popupError(error);
   }
 }
 
@@ -228,12 +225,9 @@ function btnVe_Click(args) {
   Loader(false);
   try {
     TaoChart();
-  } catch (error) {
-    $('#errorModal').show();
-    $('#errorModalContent').html(`<p>${error}</p>`);
-  } finally {
-    // @ts-ignore
     Loader(true);
+  } catch (error) {
+    popupError(error);
   }
 }
 
@@ -264,12 +258,9 @@ async function btnLuu_ClickAsync() {
         var result = await POST("/block/them", { id, content });
       }
     }
-  } catch (error) {
-    $('#errorModal').show();
-    $('#errorModalContent').html(`<p>${error}</p>`);
-  } finally {
-    // @ts-ignore
     Loader(true);
+  } catch (error) {
+    popupError(error);
   }
 }
 //#endregion

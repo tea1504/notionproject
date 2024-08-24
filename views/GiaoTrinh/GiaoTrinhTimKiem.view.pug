@@ -1,0 +1,19 @@
+﻿extends ../component
+
+block content
+	.container.mt-5
+		.row
+			.col
+				+inputSearch({
+					id: "slug",
+					label: "SLUG",
+				})
+		.row.mt-1
+			.col
+				+inputSearch({
+					id: "name",
+					label: "Tên",
+				})
+
+block js
+	script(src="/javascripts/GiaoTrinh/GiaoTrinhTimKiem.js")
