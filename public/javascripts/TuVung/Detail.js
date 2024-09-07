@@ -100,7 +100,7 @@ async function lstDanhSach_ClickAsync(args) {
 function lstDanhSach_Contextmenu(event) {
   event.preventDefault();
   var name = $(event.target).text();
-  window.open(`/tu-vung/chi-tiet?modal=1&name=${name}`, `popUpWindow${name}`, "resizable=no,scrollbars=no,toolbar=no,menubar=no,location=no,directories=no,status=no");
+  var mhTimGiaoTrinh = popupwindow(`/tu-vung/chi-tiet?modal=1&name=${name}`, name, 800, 600);
 }
 
 /**

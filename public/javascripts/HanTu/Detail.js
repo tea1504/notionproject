@@ -144,6 +144,7 @@ function VeDuLieu() {
   $(`a#link`).attr("href", duLieu.url);
   $(`a#link`).text(duLieu.id);
   $("#txtName").val(duLieu.name);
+  window.document.title = `${duLieu.name} | Hán tự`;
   VeBadge(duLieu.capDo, "#boxCapDo");
   VeBadge(duLieu.giaoTrinh, "#boxGiaoTrinh");
   $("#txtHanViet").val(duLieu.hanViet);
@@ -196,7 +197,7 @@ async function LayDanhSachChuDeTuAPI(isLoad = false) {
 async function LayDanhSachGiaoTrinhTuAPI(parent_id = "", isLoad = false) {
   if (isLoad) Loader(false);
   var res = [{ id: "", name: "" }];
-  const result = await GET(`/giao-trinh/tim-kiem?parent_id=${parent_id}`);
+  const result = await POST(`/giao-trinh/tim-kiem?parent_id=${parent_id}`);
 
   res = [];
   if (result.data) {
@@ -355,6 +356,9 @@ function VeDuLieuMazzi() {
   $("#btnHanViet").removeClass("disabled");
   $("#btnHanViet").text(duLieuMazzi.hanViet);
   $("#btnHanViet").data("val", duLieuMazzi.hanViet);
+  if (!$("#txtHanViet").val()) {
+    $("#txtHanViet").val(duLieuMazzi.hanViet);
+  }
 
   $("#btnNghia").removeClass("disabled");
   $("#btnNghia").text(duLieuMazzi.nghia);
@@ -375,6 +379,9 @@ function VeDuLieuMazzi() {
   $("#btnSoNet").removeClass("disabled");
   $("#btnSoNet").text(duLieuMazzi.soNet);
   $("#btnSoNet").data("val", duLieuMazzi.soNet);
+  if (!$("#txtSoNet").val()) {
+    $("#txtSoNet").val(duLieuMazzi.soNet);
+  }
 }
 
 $(document).on("click", "span.badge", async function (e) {
@@ -518,4 +525,13 @@ function ResetData() {
   $("#boxCoBoThu > span").remove();
   $("#txtSoNet").val("");
   $("#boxLucThu > span").remove();
+}
+
+$(document).on("contextmenu", "#boxCoBoThu .badge", (event) => lstHanTu_Oncontextmenu(event));
+$(document).on("contextmenu", "#boxLaBoThu .badge", (event) => lstHanTu_Oncontextmenu(event));
+
+function lstHanTu_Oncontextmenu(event) {
+  event.preventDefault();
+  var id = $(event.target).data("id");
+  var mhHanTu = popupwindow(`/han-tu?id=${id}`, `HanTu${id}`, 800, 400);
 }

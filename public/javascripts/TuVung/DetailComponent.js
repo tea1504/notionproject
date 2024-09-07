@@ -79,12 +79,15 @@ lstViDu_list = [];
 async function LayDuLieuTuVungAsync() {
   var name = txtTu_ref.val();
   if (!name) {
-    throw ("LayDuLieuTuVungAsync: Nhập từ vựng");
+    name = $("#txtTimKiem_TV_Detail").val();
+    if (!name) {
+      throw ("LayDuLieuTuVungAsync: Nhập từ vựng");
+    }
   }
   // @ts-ignore
   const result = await GET(`/tu-vung/tim-kiem?name=${name}`);
   if (result.status == "404") {
-    return {...duLieuNhanDuoc}
+    return { ...duLieuNhanDuoc }
   }
   // Nếu không tìm thấy thì thông báo lỗi và dừng lại
   if (result.status != "200") {
@@ -186,7 +189,7 @@ function Text_Focusout(ref, box_ref) {
   if (val) {
     for (var name of val.split(",")) {
       if (name) {
-        list.push({id:"", name})
+        list.push({ id: "", name })
       }
     }
   }
@@ -210,7 +213,7 @@ function Mazii_Click(notion, mazii) {
 function lstHanTu_Oncontextmenu(event) {
   event.preventDefault();
   var id = $(event.target).data("id");
-  window.open(`/han-tu?id=${id}`, `popUpWindow${id}`, "resizable=no,scrollbars=no,toolbar=no,menubar=no,location=no,directories=no,status=no");
+  var mhHanTu = popupwindow(`/han-tu?id=${id}`, `HanTu${id}`, 1000, 600);
 }
 
 /**
@@ -220,7 +223,7 @@ function lstHanTu_Oncontextmenu(event) {
 function TuVung_Oncontextmenu(event) {
   event.preventDefault();
   var name = $(event.target).text();
-  window.open(`/tu-vung/chi-tiet?modal=1&name=${name}`, `popUpWindow${name}`, "resizable=no,scrollbars=no,toolbar=no,menubar=no,location=no,directories=no,status=no");
+  var mhTuVung = popupwindow(`/tu-vung/chi-tiet?modal=1&name=${name}`, `TuVung${name}`, 1000, 600);
 }
 
 function slcGiaoTrinhBtn_Click() {
