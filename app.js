@@ -14,6 +14,7 @@ var chuDeRouter = require('./routes/ChuDe.route');
 var giaoTrinhRouter = require('./routes/GiaoTrinh.route');
 var tuVungRouter = require('./routes/TuVung.route');
 var blockRouter = require('./routes/Block.route');
+var nguPhapRouter = require('./routes/NguPhap.route');
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use('/chu-de', chuDeRouter);
 app.use('/giao-trinh', giaoTrinhRouter);
 app.use('/tu-vung', tuVungRouter);
 app.use('/block', blockRouter);
+app.use('/ngu-phap', nguPhapRouter);
 app.use('/error', async (req, res, next) => {
   var message = req.query.message;
   res.render('partials/errorPopup', { message, title : "Lỗi"});

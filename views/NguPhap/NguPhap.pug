@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+  .container.mt-5
+    .row
+      .col
+        .alert.alert-primary(role="alert")
+          | [もし]　{1}たら、　
+    .row 
+      .col 
+        svg(
+          height="400"
+          width="450"
+          xmlns="http://www.w3.org/2000/svg")
+          g(visibility="visible")
+            path(
+              d="M369,0V5H369V5H512V0H512"
+              stroke="red"
+              stroke-width="1"
+              fill="none")
+            path(
+              d="M316,5V25H-12V182H28"
+              stroke="red"
+              stroke-width="1"
+              fill="none")
+block js
+  script(src="/javascripts/NguPhap/index.js") 
